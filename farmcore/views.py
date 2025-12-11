@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from datetime import date
 
 from .models import Farmer, Farm, SeasonPlan, PlannedActivity, ActualActivity
-from .serializers import (
+from .forms import (
     FarmerSerializer,
     FarmSerializer,
     SeasonPlanSerializer,

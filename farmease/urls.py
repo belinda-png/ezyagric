@@ -15,8 +15,31 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from farmease import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Farmers
+    path('farmers/', views.farmer_list, name='farmer_list'),
+    path('farmers/create/', views.create_farmer, name='create_farmer'),
+
+    # Farms
+    path('farms/', views.farm_list, name='farm_list'),
+    path('farms/create/', views.create_farm, name='create_farm'),
+
+    # Season Plans
+    path('seasons/', views.seasonplan_list, name='seasonplan_list'),
+    path('seasons/create/', views.create_seasonplan, name='create_seasonplan'),
+
+    # Planned Activities
+    path('planned-activities/', views.planned_activity_list, name='planned_activity_list'),
+    path('planned-activities/create/', views.create_planned_activity, name='create_planned_activity'),
+
+    # Actual Activities
+    path('actual-activities/', views.actual_activity_list, name='actual_activity_list'),
+    path('actual-activities/create/', views.create_actual_activity, name='create_actual_activity'),
+
+    # Optional: Season summary
+    path('seasons/<int:season_id>/summary/', views.season_summary, name='season_summary'),
 ]
