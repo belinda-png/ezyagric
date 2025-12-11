@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Farm Dashboard</title>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<style>
+    body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f7fa;
+    color: #1a1a1a;
+}
+
+.container {
+    display: flex;
+}
+
+/* Sidebar */
+/* Sidebar container */
+.sidebar {
+    width: 240px;
+    background-color: #0d1b2a;
+    height: 100vh;
+    color: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding-top: 30px;
+    box-shadow: 2px 0 6px rgba(0,0,0,0.2);
+}
+
+/* Menu list */
+.menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Regular menu items */
+.menu li {
+    padding: 15px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #e5e5e5;
+    transition: background 0.3s, padding-left 0.3s;
+}
+
+/* Links inside menu */
+.menu li a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* Hover effect */
+.menu li:hover {
+    background-color: #1b263b;
+    padding-left: 35px;
+}
+
+/* Active item style */
+.menu li.active {
+    background-color: #415a77;
+    color: white;
+    font-weight: bold;
+    padding-left: 35px;
+}
+
+/* Active link */
+.menu li.active a {
+    color: white;
+}
+
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+.logo span {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+}
+
+.menu li {
+    padding: 12px 0;
+    font-size: 16px;
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.menu li.active,
+.menu li:hover {
+    opacity: 1;
+    background: #1b263b;
+    padding-left: 10px;
+}
+
+.menu.bottom {
+    margin-top: 200px;
+}
+
+/* Main section */
+.main {
+    flex: 1;
+    padding: 40px;
+}
+
+h1 {
+    margin-bottom: 5px;
+}
+
+.stats {
+    display: flex;
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    width: 200px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.card.danger {
+    border-left: 4px solid #ff6b6b;
+}
+
+.card .value {
+    font-size: 32px;
+    margin-top: 10px;
+}
+
+.row {
+    display: flex;
+    gap: 30px;
+}
+
+.column {
+    flex: 1;
+}
+
+/* Season Cards */
+.season-card {
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.season-card .status {
+    background: #c6f6d5;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #276749;
+}
+
+/* Recent activity */
+.recent-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.recent-card.empty {
+    opacity: 0.7;
+}
+.column-full {
+    flex: 1;
+    margin-top: 40px;
+}
+
+.farm-table {
+    width: 100%;
+    background: white;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.farm-table th {
+    background: #0d1b2a;
+    color: white;
+    padding: 14px;
+    text-align: left;
+}
+
+.farm-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.farm-table tr:hover {
+    background: #f5f7fa;
+}
+
+
+</style>
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2 class="logo">🌿 EzyAgric</h2>
+        <p class="sub">Farm Manager</p>
+
+       <ul class="menu">
+    <li class="active"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+    <li><a href="farmers.html/">Farmers & Farms</a></li>
+
+</ul>
+
+
+        <ul class="menu bottom">
+            <li>Settings</li>
+            <li>Logout</li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+
+        <h1>Dashboard Overview</h1>
+        <p>Welcome back, Field Officer.</p>
+
+        <!-- Stats Section -->
+        <div class="stats">
+            <div class="card">
+                <h3>Total Farmers</h3>
+                <p class="value">{{ total_farmers }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Active Seasons</h3>
+                <p class="value">{{ active_seasons }}</p>
+            </div>
+
+            <div class="card danger">
+                <h3>Overdue Tasks</h3>
+                <p class="value">{{ overdue_tasks }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Est. Investment</h3>
+                <p class="value">{{ total_investment|floatformat:0 }} UGX</p>
+            </div>
+        </div>
+
+        <!-- Two-column layout -->
+        <div class="row">
+
+            <!-- Active Seasons -->
+            <div class="column">
+                <h2>Active Seasons</h2>
+
+                {% for season in active_season_list %}
+                <div class="season-card">
+                    <div class="left">
+                        <h3>{{ season.crop_name }} - {{ season.season_name }}</h3>
+                        <p>{{ season.farm.name }} • {{ season.farm.farmer.name }}</p>
+                        <small>Start: {{ season.start_date }}</small>
+                    </div>
+                    <div class="status">ACTIVE</div>
+                </div>
+                {% empty %}
+                <p>No active seasons.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="column">
+                <h2>Recent Activity</h2>
+
+                {% if recent_activities %}
+                    {% for act in recent_activities %}
+                        <div class="recent-card">
+                            <strong>{{ act.activity_type }}</strong>
+                            <p>{{ act.actual_date }}</p>
+                            <small>{{ act.season_plan.crop_name }} - {{ act.season_plan.season_name }}</small>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="recent-card empty">
+                        <p>No recent activities logged today</p>
+                        <small>Check your schedule for upcoming tasks</small>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+<!-- Farmers & Farms Table -->
+<div class="column-full">
+    <h2>Farmers & Farms</h2>
+
+    <table class="farm-table">
+        <thead>
+            <tr>
+                <th>Farmer Name</th>
+                <th>Phone</th>
+                <th>Total Farms</th>
+                <th>Farms Details</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for farmer in farmers_with_farms %}
+            <tr>
+                <td>{{ farmer.name }}</td>
+                <td>{{ farmer.phone_number }}</td>
+                <td>{{ farmer.farm_set.count }}</td>
+                <td>
+                    {% for farm in farmer.farm_set.all %}
+                        <strong>{{ farm.name }}</strong> — {{ farm.size_in_acres }} acres <br>
+                    {% empty %}
+                        No farms
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+    </main>
+</div>
+
+</body>
+</html>

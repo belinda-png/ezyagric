@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="Description" content="Enter your description here"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="/static/css/style.css">
+<title>Title</title>
+</head>
+<body>
+    
+<!-- templates/farmers/farmers_list.html -->
+{% extends "farmers/base.html" %}
+
+{% block title %}Farmers List - Farmers & Farms{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div>
+            <h2 class="card-title">Registered Farmers</h2>
+            <p class="card-description">Manage farmers and their property details</p>
+        </div>
+        <a href="{% url 'add_farmer' %}" class="btn btn-primary">+ Add Farmer</a>
+    </div>
+    
+    <div class="search-box">
+        <form method="GET" style="margin: 0;">
+            <input type="text" 
+                   name="search" 
+                   placeholder="Search by name, ID, or district..." 
+                   value="{{ search_query }}"
+                   style="margin: 0;">
+        </form>
+    </div>
+    
+    {% if farmers %}
+    <div class="table-header">
+        <div>FARMER DETAILS</div>
+        <div>CONTACT</div>
+        <div>FARMS</div>
+        <div>TOTAL ACREAGE</div>
+        <div></div>
+    </div>
+    
+    {% for farmer in farmers %}
+    <div class="farmer-row">
+        <div class="farmer-info">
+            <div class="farmer-avatar">{{ farmer.name.0|upper }}</div>
+            <div>
+                <div class="farmer-name">{{ farmer.name }}</div>
+                <div class="farmer-id">ID: {{ farmer.farmer_id }}</div>
+            </div>
+        </div>
+        
+        <div class="contact-info">
+            <div>📞 {{ farmer.phone }}</div>
+            <div>📍 {{ farmer.district }}</div>
+        </div>
+        
+        <div>🏡 {{ farmer.total_farms }} farm{{ farmer.total_farms|pluralize }}</div>
+        
+        <div>{{ farmer.total_acreage }} acre{{ farmer.total_acreage|pluralize }}</div>
+        
+        <div>
+            <a href="{% url 'farmer_details' farmer.farmer_id %}" class="btn btn-secondary">View Details</a>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">🌾</div>
+        <h3>No farmers found</h3>
+        <p>{% if search_query %}Try a different search term{% else %}Start by adding your first farmer{% endif %}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+    
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

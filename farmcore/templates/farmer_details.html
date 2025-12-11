@@ -1,0 +1,73 @@
+<!-- templates/farmers/farmer_details.html -->
+{% extends "farmers/base.html" %}
+
+{% block title %}{{ farmer.name }} - Farmers & Farms{% endblock %}
+
+{% block content %}
+<a href="{% url 'farmers_list' %}" class="back-link">Back to Farmers List</a>
+
+<div class="card">
+    <div class="card-header">
+        <div>
+            <h2 class="card-title">{{ farmer.name }}</h2>
+            <p class="card-description">ID: {{ farmer.farmer_id }}</p>
+        </div>
+        <div class="button-group">
+            <a href="{% url 'edit_farmer' farmer.farmer_id %}" class="btn btn-warning">Edit Farmer</a>
+            <a href="{% url 'add_farm' farmer.farmer_id %}" class="btn btn-primary">+ Add Farm</a>
+            <form method="POST" action="{% url 'delete_farmer' farmer.farmer_id %}" style="display: inline; margin: 0;" 
+                  onsubmit="return confirm('Are you sure you want to delete this farmer and all their farms?');">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete Farmer</button>
+            </form>
+        </div>
+    </div>
+    
+    <h3 style="margin-bottom: 15px; font-size: 18px; color: #333;">Contact Information</h3>
+    <div class="info-grid">
+        <div class="info-item">
+            <div class="info-label">Phone</div>
+            <div class="info-value">{{ farmer.phone }}</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">District</div>
+            <div class="info-value">{{ farmer.district }}</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">Total Farms</div>
+            <div class="info-value">{{ farmer.total_farms }}</div>
+        </div>
+        <div class="info-item">
+            <div class="info-label">Total Acreage</div>
+            <div class="info-value">{{ farmer.total_acreage }} acres</div>
+        </div>
+    </div>
+    
+    <h3 style="margin: 30px 0 15px 0; font-size: 18px; color: #333;">Farms</h3>
+    
+    {% if farms %}
+        {% for farm in farms %}
+        <div class="farm-card">
+            <h4>{{ farm.name }}</h4>
+            <p><strong>Location:</strong> {{ farm.location }}</p>
+            <p><strong>Size:</strong> {{ farm.acres }} acres</p>
+            <p><strong>Crops:</strong> {{ farm.crops }}</p>
+            
+            <div class="button-group">
+                <a href="{% url 'edit_farm' farm.id %}" class="btn btn-warning">Edit</a>
+                <form method="POST" action="{% url 'delete_farm' farm.id %}" style="display: inline; margin: 0;"
+                      onsubmit="return confirm('Are you sure you want to delete this farm?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">🏡</div>
+            <p>No farms registered yet for this farmer.</p>
+            <a href="{% url 'add_farm' farmer.farmer_id %}" class="btn btn-primary">+ Add First Farm</a>
+        </div>
+    {% endif %}
+</div>

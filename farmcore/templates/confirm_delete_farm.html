@@ -1,0 +1,36 @@
+
+<!-- templates/farmers/confirm_delete_farm.html -->
+{% extends "farmers/base.html" %}
+
+{% block title %}Delete {{ farm.name }} - Farmers & Farms{% endblock %}
+
+{% block content %}
+<a href="{% url 'farmer_details' farmer.farmer_id %}" class="back-link">Back to {{ farmer.name }}</a>
+
+<div class="card">
+    <h2 class="card-title" style="margin-bottom: 24px; color: #dc3545;">Delete Farm</h2>
+    
+    <div class="alert alert-danger">
+        <strong>Warning!</strong> This action cannot be undone.
+    </div>
+    
+    <p style="font-size: 16px; margin-bottom: 20px;">
+        Are you sure you want to delete <strong>{{ farm.name }}</strong>?
+    </p>
+    
+    <div style="background-color: #f9f9f9; padding: 16px; border-radius: 6px; margin-bottom: 30px;">
+        <p style="margin-bottom: 8px;"><strong>Farm:</strong> {{ farm.name }}</p>
+        <p style="margin-bottom: 8px;"><strong>Location:</strong> {{ farm.location }}</p>
+        <p style="margin-bottom: 8px;"><strong>Size:</strong> {{ farm.acres }} acres</p>
+        <p><strong>Owner:</strong> {{ farmer.name }}</p>
+    </div>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <div class="button-group">
+            <button type="submit" class="btn btn-danger">Yes, Delete Farm</button>
+            <a href="{% url 'farmer_details' farmer.farmer_id %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

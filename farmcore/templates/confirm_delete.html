@@ -1,0 +1,33 @@
+
+<!-- templates/farmers/confirm_delete.html -->
+{% extends "farmers/base.html" %}
+
+{% block title %}Delete {{ farmer.name }} - Farmers & Farms{% endblock %}
+
+{% block content %}
+<a href="{% url 'farmer_details' farmer.farmer_id %}" class="back-link">Back to {{ farmer.name }}</a>
+
+<div class="card">
+    <h2 class="card-title" style="margin-bottom: 24px; color: #dc3545;">Delete Farmer</h2>
+    
+    <div class="alert alert-danger">
+        <strong>Warning!</strong> This action cannot be undone.
+    </div>
+    
+    <p style="font-size: 16px; margin-bottom: 20px;">
+        Are you sure you want to delete <strong>{{ farmer.name }}</strong> (ID: {{ farmer.farmer_id }})?
+    </p>
+    
+    <p style="color: #666; margin-bottom: 30px;">
+        This will also delete all {{ farmer.total_farms }} farm{{ farmer.total_farms|pluralize }} associated with this farmer.
+    </p>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <div class="button-group">
+            <button type="submit" class="btn btn-danger">Yes, Delete Farmer</button>
+            <a href="{% url 'farmer_details' farmer.farmer_id %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
