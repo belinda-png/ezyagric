@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'formcore',
+    'farmcore',
+    'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
