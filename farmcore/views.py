@@ -42,7 +42,7 @@ from .models import Farmer, Farm
 from .forms import FarmerForm, FarmForm
 
 
-def farmers_list(request):
+def farmers(request):
     """Display list of all registered farmers"""
     search_query = request.GET.get('search', '')
     
@@ -59,8 +59,10 @@ def farmers_list(request):
         'farmers': farmers,
         'search_query': search_query,
     }
-    return render(request, 'farmers/farmers_list.html', context)
-
+    return render(request, 'farmer.html', context)
+def base(request):
+    """Render the base template"""
+    return render(request, 'base.html')
 
 def farmer_details(request, farmer_id):
     """Display details of a specific farmer and their farms"""
@@ -71,7 +73,7 @@ def farmer_details(request, farmer_id):
         'farmer': farmer,
         'farms': farms,
     }
-    return render(request, 'farmers/farmer_details.html', context)
+    return render(request, 'farmer_details.html', context)
 
 
 def add_farmer(request):
@@ -89,7 +91,7 @@ def add_farmer(request):
         'form': form,
         'title': 'Add New Farmer',
     }
-    return render(request, 'farmers/farmer_form.html', context)
+    return render(request, 'farmer_form.html', context)
 
 
 def edit_farmer(request, farmer_id):
@@ -110,7 +112,7 @@ def edit_farmer(request, farmer_id):
         'title': f'Edit {farmer.name}',
         'farmer': farmer,
     }
-    return render(request, 'farmers/farmer_form.html', context)
+    return render(request, 'farmer_form.html', context)
 
 
 def delete_farmer(request, farmer_id):
@@ -126,7 +128,7 @@ def delete_farmer(request, farmer_id):
     context = {
         'farmer': farmer,
     }
-    return render(request, 'farmers/confirm_delete.html', context)
+    return render(request, 'confirm_delete.html', context)
 
 
 def add_farm(request, farmer_id):
@@ -149,7 +151,7 @@ def add_farm(request, farmer_id):
         'farmer': farmer,
         'title': f'Add Farm for {farmer.name}',
     }
-    return render(request, 'farmers/farm_form.html', context)
+    return render(request, 'farm_form.html', context)
 
 
 def edit_farm(request, farm_id):
@@ -171,7 +173,7 @@ def edit_farm(request, farm_id):
         'title': f'Edit {farm.name}',
         'farm': farm,
     }
-    return render(request, 'farmers/farm_form.html', context)
+    return render(request, 'farm_form.html', context)
 
 
 def delete_farm(request, farm_id):
@@ -189,4 +191,4 @@ def delete_farm(request, farm_id):
         'farm': farm,
         'farmer': farmer,
     }
-    return render(request, 'farmers/confirm_delete_farm.html', context)
+    return render(request, 'confirm_delete_farm.html', context)

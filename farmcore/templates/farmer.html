@@ -10,75 +10,238 @@
 <link rel="stylesheet" href="/static/css/style.css">
 <title>Title</title>
 </head>
+<style>
+    /* ---------- GENERAL CONTAINER ---------- */
+.farmers-container {
+    padding: 40px;
+    width: 100%;
+    max-width: 1100px;
+    margin: auto;
+}
+
+/* ---------- HEADER ---------- */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.page-header h2 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.page-header p {
+    margin: 0;
+    color: #666;
+}
+
+/* Add Farmer Button */
+.btn-add {
+    background: #0d6efd;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.btn-add:hover {
+    background: #084298;
+}
+
+/* ---------- SEARCH BOX ---------- */
+.search-box {
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
+
+/* ---------- TABLE ---------- */
+.farmers-table {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Header */
+.table-header {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+    background: #f1f5f9;
+    padding: 14px 20px;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Rows */
+.table-row {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.table-row:hover {
+    background: #f9fafb;
+}
+
+/* ---------- FARMER COLUMN ---------- */
+.farmer-col {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background: #1e293b;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    border-radius: 50%;
+    font-size: 18px;
+}
+
+.name {
+    font-weight: 600;
+}
+
+.sub {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+/* ---------- CONTACT ---------- */
+.contact-col div {
+    font-size: 14px;
+}
+
+/* ---------- TEXT COLUMNS ---------- */
+.text-col {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* ---------- ACTION BUTTON ---------- */
+.btn-view {
+    background: #475569;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-view:hover {
+    background: #1e293b;
+}
+
+/* ---------- EMPTY STATE ---------- */
+.empty-state {
+    text-align: center;
+    padding: 50px;
+    color: #555;
+}
+
+.empty-state .icon {
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+</style>
 <body>
-    
-<!-- templates/farmers/farmers_list.html -->
-{% extends "farmers/base.html" %}
+<div class="farmers-container">
 
-{% block title %}Farmers List - Farmers & Farms{% endblock %}
-
-{% block content %}
-<div class="card">
-    <div class="card-header">
+    <div class="page-header">
         <div>
-            <h2 class="card-title">Registered Farmers</h2>
-            <p class="card-description">Manage farmers and their property details</p>
+            <h2>Registered Farmers</h2>
+            <p>Manage farmers and their property details</p>
         </div>
-        <a href="{% url 'add_farmer' %}" class="btn btn-primary">+ Add Farmer</a>
+        <a href="{% url 'add_farmer' %}" class="btn-add">+ Add Farmer</a>
     </div>
-    
-    <div class="search-box">
-        <form method="GET" style="margin: 0;">
-            <input type="text" 
-                   name="search" 
-                   placeholder="Search by name, ID, or district..." 
-                   value="{{ search_query }}"
-                   style="margin: 0;">
-        </form>
-    </div>
-    
+
+    <form method="GET" class="search-box">
+        <input type="text" name="search" placeholder="Search by name or phone..."
+               value="{{ search_query }}">
+    </form>
+
     {% if farmers %}
-    <div class="table-header">
-        <div>FARMER DETAILS</div>
-        <div>CONTACT</div>
-        <div>FARMS</div>
-        <div>TOTAL ACREAGE</div>
-        <div></div>
-    </div>
-    
-    {% for farmer in farmers %}
-    <div class="farmer-row">
-        <div class="farmer-info">
-            <div class="farmer-avatar">{{ farmer.name.0|upper }}</div>
-            <div>
-                <div class="farmer-name">{{ farmer.name }}</div>
-                <div class="farmer-id">ID: {{ farmer.farmer_id }}</div>
+    <div class="farmers-table">
+
+        <div class="table-header">
+            <div>Farmer</div>
+            <div>Contact</div>
+            <div>Farms</div>
+            <div>Total Acreage</div>
+            <div></div>
+        </div>
+
+        {% for farmer in farmers %}
+        <div class="table-row">
+
+            <div class="farmer-col">
+                <div class="avatar">{{ farmer.name.0|upper }}</div>
+                <div>
+                    <div class="name">{{ farmer.name }}</div>
+                    <div class="sub">ID: {{ farmer.farmer_id }}</div>
+                </div>
             </div>
+
+            <div class="contact-col">
+                <div>📞 {{ farmer.phone }}</div>
+                <div>📍 {{ farmer.district }}</div>
+            </div>
+
+            <div class="text-col">
+                {{ farmer.total_farms }} farm{{ farmer.total_farms|pluralize }}
+            </div>
+
+            <div class="text-col">
+                {{ farmer.total_acreage }} acre{{ farmer.total_acreage|pluralize }}
+            </div>
+
+            <div class="action-col">
+                <a href="{% url 'farmer_details' farmer.farmer_id %}" class="btn-view">View</a>
+            </div>
+
         </div>
-        
-        <div class="contact-info">
-            <div>📞 {{ farmer.phone }}</div>
-            <div>📍 {{ farmer.district }}</div>
-        </div>
-        
-        <div>🏡 {{ farmer.total_farms }} farm{{ farmer.total_farms|pluralize }}</div>
-        
-        <div>{{ farmer.total_acreage }} acre{{ farmer.total_acreage|pluralize }}</div>
-        
-        <div>
-            <a href="{% url 'farmer_details' farmer.farmer_id %}" class="btn btn-secondary">View Details</a>
-        </div>
+        {% endfor %}
+
     </div>
-    {% endfor %}
+
     {% else %}
     <div class="empty-state">
-        <div class="empty-state-icon">🌾</div>
-        <h3>No farmers found</h3>
-        <p>{% if search_query %}Try a different search term{% else %}Start by adding your first farmer{% endif %}</p>
+        <div class="icon">🌾</div>
+        <h3>No Farmers Found</h3>
+        <p>
+            {% if search_query %}
+                Try a different search term
+            {% else %}
+                Start by adding your first farmer
+            {% endif %}
+        </p>
     </div>
     {% endif %}
 </div>
-{% endblock %}
+
     
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
