@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ plan.crop_name }} - Season Plan Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">{{ plan.crop_name }} - {{ plan.get_season_name_display }}</h1>
+                <p class="text-gray-600">Farm: {{ plan.farm.name }} | Farmer: {{ plan.farm.farmer.name }}</p>
+            </div>
+            <div class="flex gap-4">
+                <a href="{% url 'seasonplan_list' %}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                    <i class="fas fa-arrow-left mr-2"></i>Back
+                </a>
+                <a href="{% url 'seasonplan_summary' plan.id %}" class="bg-cyan-500 text-white px-4 py-2 rounded hover:bg-cyan-600">
+                    <i class="fas fa-chart-bar mr-2"></i>Summary
+                </a>
+                <a href="{% url 'seasonplan_edit' plan.id %}" class="bg-emerald-500 text-white px-4 py-2 rounded hover:bg-emerald-600">
+                    <i class="fas fa-edit mr-2"></i>Edit
+                </a>
+            </div>
+        </div>
+
+        <!-- Season Plan Info -->
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-4">Season Plan Details</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-gray-600 text-sm">Crop Name</p>
+                    <p class="text-lg font-semibold text-gray-900">{{ plan.crop_name }}</p>
+                </div>
+                <div>
+                    <p class="text-gray-600 text-sm">Season</p>
+                    <p class="text-lg font-semibold text-gray-900">{{ plan.get_season_name_display }}</p>
+                </div>
+                <div>
+                    <p class="text-gray-600 text-sm">Start Date</p>
+                    <p class="text-lg font-semibold text-gray-900">
+                        {% if plan.start_date %}{{ plan.start_date|date:"M d, Y" }}{% else %}Not set{% endif %}
+                    </p>
+                </div>
+                <div>
+                    <p class="text-gray-600 text-sm">Status</p>
+                    <p class="text-lg font-semibold">
+                        {% if plan.is_active %}
+                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Active</span>
+                        {% else %}
+                            <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">Inactive</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Planned Activities -->
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-900">Planned Activities</h2>
+                <a href="{% url 'plannedactivity_create' %}" class="bg-emerald-500 text-white px-3 py-2 rounded text-sm hover:bg-emerald-600">
+                    <i class="fas fa-plus mr-1"></i>Add Activity
+                </a>
+            </div>
+            
+            {% if planned_activities %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Activity</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Target Date</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Estimated Cost</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        {% for activity in planned_activities %}
+                        <tr>
+                            <td class="px-4 py-2 text-sm text-gray-900">{{ activity.get_activity_type_display }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-900">{{ activity.target_date|date:"M d, Y" }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-900">
+                                {% if activity.actual_cost %}UGX {{ activity.actual_cost|floatformat:0 }}{% else %}Not set{% endif %}
+                            </td>
+                            <td class="px-4 py-2 text-sm">
+                                {% if activity.actual_activities.exists %}
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">Completed</span>
+                                {% else %}
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs">Pending</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-gray-600 text-center py-4">No planned activities yet</p>
+            {% endif %}
+        </div>
+
+        <!-- Actual Activities -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-900">Actual Activities (Logged)</h2>
+                <a href="{% url 'actualactivity_create' %}" class="bg-cyan-500 text-white px-3 py-2 rounded text-sm hover:bg-cyan-600">
+                    <i class="fas fa-plus mr-1"></i>Log Activity
+                </a>
+            </div>
+            
+            {% if actual_activities %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Activity</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Date</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Actual Cost</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        {% for activity in actual_activities %}
+                        <tr>
+                            <td class="px-4 py-2 text-sm text-gray-900">{{ activity.get_activity_type_display }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-900">{{ activity.actual_date|date:"M d, Y" }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-900">UGX {{ activity.actual_cost_ugx|floatformat:0 }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-600">{{ activity.notes|truncatewords:10 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-gray-600 text-center py-4">No actual activities logged yet</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

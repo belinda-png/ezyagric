@@ -27,14 +27,26 @@ class Farm(models.Model):
         return f"{self.farmer.name}'s Farm - {self.name}"    
     
 class SeasonPlan(models.Model):
+    SEASON_CHOICES = [
+        ('season_a', 'Season A (March - July) - Long Rains'),
+        ('season_b', 'Season B (August - November) - Short Rains'),
+        ('season_c', 'Season C (December - February) - Dry Season'),
+    ]
+    
+    STATUS_CHOICES = [
+        ('is_active', 'Is Active'),
+        ('completed', 'Completed'),
+        ('planned', 'Planned'),
+    ]
+    
     farm = models.ForeignKey(Farm, on_delete=models.CASCADE)
     crop_name = models.CharField(max_length=100)
-    season_name = models.CharField(max_length=100)
-    is_active = models.BooleanField(default=True)
+    season_name = models.CharField(max_length=100, choices=SEASON_CHOICES)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='planned')
     start_date = models.DateField(null=True, blank=True)
     
     def __str__(self):
-        return f"{self.crop_name} Season ({self.season_name})"  
+        return f"{self.crop_name} - {self.get_season_name_display()}"  
 
 class PlannedActivity(models.Model):
     ACTIVITY_CHOICES = [
@@ -45,11 +57,12 @@ class PlannedActivity(models.Model):
         ('harvesting', 'Harvesting'),   
     ]
     season_plan = models.ForeignKey(SeasonPlan, on_delete=models.CASCADE)
-    activity_type = models.CharField(max_length=100)
+    activity_type = models.CharField(max_length=100, choices=ACTIVITY_CHOICES)
     target_date = models.DateField()
-    actual_cost = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    estimated_cost_ugx = models.FloatField(null=True, blank=True)
+    
     def __str__(self):
-        return f"{self.activity_type} on {self.target_date}"      
+        return f"{self.get_activity_type_display()} on {self.target_date}"      
 
 class ActualActivity(models.Model):
     season_plan = models.ForeignKey(SeasonPlan, on_delete=models.CASCADE, related_name='actual_activities')
