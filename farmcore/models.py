@@ -2,22 +2,37 @@ from django.db import models
 
 # Create your models here.
 class Farmer(models.Model):
-    name = models.CharField(max_length=100)
-    phone_number = models.CharField(max_length=15, unique=True)
+    farmer_id = models.CharField(max_length=20, unique=True, blank=True, null=True)
+    name = models.CharField(max_length=255, blank=True, null=True)
+    phone = models.CharField(max_length=15, unique=True)
+    
     def __str__(self):
         return self.name
+    
+    # @property
+    def total_farms(self):
+        return self.farms.count()
+    
+    # @property
+    def total_acreage(self):
+        return sum(farm.size_in_acres for farm in self.farms.all())
 
 class Farm(models.Model):
-    farmer = models.ForeignKey(Farmer, on_delete=models.CASCADE)
+    farmer = models.ForeignKey(Farmer, on_delete=models.CASCADE, related_name='farms')
     name = models.CharField(max_length=255)
     size_in_acres = models.FloatField()
+    location = models.CharField(max_length=255, default='')
+    
     def __str__(self):
-        return f"{self.farmer.name}'s Farm at {self.location}"    
+        return f"{self.farmer.name}'s Farm - {self.name}"    
     
 class SeasonPlan(models.Model):
     farm = models.ForeignKey(Farm, on_delete=models.CASCADE)
     crop_name = models.CharField(max_length=100)
     season_name = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=True)
+    start_date = models.DateField(null=True, blank=True)
+    
     def __str__(self):
         return f"{self.crop_name} Season ({self.season_name})"  
 

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Planned Activities</h2>
+        <a href="{% url 'plannedactivity_create' %}" class="btn btn-primary">+ Add Activity</a>
+    </div>
+
+    <div class="table-header">
+        <div>SEASON</div>
+        <div>ACTIVITY</div>
+        <div>TARGET DATE</div>
+        <div>COST (UGX)</div>
+    </div>
+
+    {% for activity in activities %}
+    <div class="table-row">
+        <div>{{ activity.season_plan.crop_name }} ({{ activity.season_plan.season_name }})</div>
+        <div>{{ activity.activity_type }}</div>
+        <div>{{ activity.target_date }}</div>
+        <div>{{ activity.actual_cost }}</div>
+    </div>
+    {% empty %}
+    <p class="empty-text">No planned activities found.</p>
+    {% endfor %}
+</div>
+{% endblock %}

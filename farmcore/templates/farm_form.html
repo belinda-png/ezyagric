@@ -1,11 +1,11 @@
 
 <!-- templates/farmers/farm_form.html -->
-{% extends "farmers/base.html" %}
+{% extends "base.html" %}
 
 {% block title %}{{ title }} - Farmers & Farms{% endblock %}
 
 {% block content %}
-<a href="{% url 'farmer_details' farmer.farmer_id %}" class="back-link">Back to {{ farmer.name }}</a>
+<a href="{% url 'farmer_details' farmer.id %}" class="back-link">Back to {{ farmer.name }}</a>
 
 <div class="card">
     <h2 class="card-title" style="margin-bottom: 24px;">{{ title }}</h2>
@@ -37,7 +37,7 @@
             <button type="submit" class="btn btn-primary">
                 {% if farm %}Update Farm{% else %}Add Farm{% endif %}
             </button>
-            <a href="{% url 'farmer_details' farmer.farmer_id %}" class="btn btn-secondary">Cancel</a>
+            <a href="{% url 'farmer_details' farmer.id %}" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
 </div>

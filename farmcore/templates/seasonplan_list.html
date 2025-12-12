@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Season Plans</h2>
+        <a href="{% url 'seasonplan_create' %}" class="btn btn-primary">+ Add Season Plan</a>
+    </div>
+
+    <div class="table-header">
+        <div>FARM</div>
+        <div>CROP</div>
+        <div>SEASON</div>
+        <div>ACTIVE</div>
+        <div>START DATE</div>
+    </div>
+
+    {% for plan in plans %}
+    <div class="table-row">
+        <div>{{ plan.farm.name }}</div>
+        <div>{{ plan.crop_name }}</div>
+        <div>{{ plan.season_name }}</div>
+        <div>{% if plan.is_active %}🟢 Active{% else %}🔴 Inactive{% endif %}</div>
+        <div>{{ plan.start_date }}</div>
+    </div>
+    {% empty %}
+    <p class="empty-text">No season plans found.</p>
+    {% endfor %}
+</div>
+{% endblock %}

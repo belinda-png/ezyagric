@@ -7,19 +7,18 @@
 <meta name="Description" content="Enter your description here"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="/static/css/style.css">
 <title>Title</title>
 </head>
 <style>
-    /* ---------- GENERAL CONTAINER ---------- */
 .farmers-container {
     padding: 40px;
     width: 100%;
-    max-width: 1100px;
+    max-width: 1200px;
     margin: auto;
 }
 
-/* ---------- HEADER ---------- */
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -38,7 +37,6 @@
     color: #666;
 }
 
-/* Add Farmer Button */
 .btn-add {
     background: #0d6efd;
     color: white;
@@ -53,7 +51,6 @@
     background: #084298;
 }
 
-/* ---------- SEARCH BOX ---------- */
 .search-box {
     margin-bottom: 20px;
 }
@@ -66,95 +63,6 @@
     font-size: 15px;
 }
 
-/* ---------- TABLE ---------- */
-.farmers-table {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-/* Header */
-.table-header {
-    display: grid;
-    grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
-    background: #f1f5f9;
-    padding: 14px 20px;
-    font-weight: bold;
-    color: #333;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-/* Rows */
-.table-row {
-    display: grid;
-    grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
-    padding: 16px 20px;
-    border-bottom: 1px solid #eee;
-    align-items: center;
-    transition: 0.2s;
-}
-
-.table-row:hover {
-    background: #f9fafb;
-}
-
-/* ---------- FARMER COLUMN ---------- */
-.farmer-col {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.avatar {
-    width: 40px;
-    height: 40px;
-    background: #1e293b;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    border-radius: 50%;
-    font-size: 18px;
-}
-
-.name {
-    font-weight: 600;
-}
-
-.sub {
-    color: #6b7280;
-    font-size: 13px;
-}
-
-/* ---------- CONTACT ---------- */
-.contact-col div {
-    font-size: 14px;
-}
-
-/* ---------- TEXT COLUMNS ---------- */
-.text-col {
-    font-size: 15px;
-    font-weight: 500;
-}
-
-/* ---------- ACTION BUTTON ---------- */
-.btn-view {
-    background: #475569;
-    color: white;
-    padding: 6px 14px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 14px;
-    transition: 0.2s;
-}
-
-.btn-view:hover {
-    background: #1e293b;
-}
-
-/* ---------- EMPTY STATE ---------- */
 .empty-state {
     text-align: center;
     padding: 50px;
@@ -165,7 +73,6 @@
     font-size: 50px;
     margin-bottom: 10px;
 }
-
 </style>
 <body>
 <div class="farmers-container">
@@ -184,47 +91,35 @@
     </form>
 
     {% if farmers %}
-    <div class="farmers-table">
-
-        <div class="table-header">
-            <div>Farmer</div>
-            <div>Contact</div>
-            <div>Farms</div>
-            <div>Total Acreage</div>
-            <div></div>
-        </div>
-
-        {% for farmer in farmers %}
-        <div class="table-row">
-
-            <div class="farmer-col">
-                <div class="avatar">{{ farmer.name.0|upper }}</div>
-                <div>
-                    <div class="name">{{ farmer.name }}</div>
-                    <div class="sub">ID: {{ farmer.farmer_id }}</div>
-                </div>
-            </div>
-
-            <div class="contact-col">
-                <div>📞 {{ farmer.phone }}</div>
-                <div>📍 {{ farmer.district }}</div>
-            </div>
-
-            <div class="text-col">
-                {{ farmer.total_farms }} farm{{ farmer.total_farms|pluralize }}
-            </div>
-
-            <div class="text-col">
-                {{ farmer.total_acreage }} acre{{ farmer.total_acreage|pluralize }}
-            </div>
-
-            <div class="action-col">
-                <a href="{% url 'farmer_details' farmer.farmer_id %}" class="btn-view">View</a>
-            </div>
-
-        </div>
-        {% endfor %}
-
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-4 py-2 text-left">Farmer ID</th>
+                    <th class="px-4 py-2 text-left">Name</th>
+                    <th class="px-4 py-2 text-left">Phone</th>
+                    <th class="px-4 py-2 text-left">Total Farms</th>
+                    <th class="px-4 py-2 text-left">Total Acreage</th>
+                    <th class="px-4 py-2 text-left">Location</th>
+                    <th class="px-4 py-2 text-left">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for farmer in farmers %}
+                <tr>
+                    <td class="px-4 py-1">{{ farmer.farmer_id|default:"N/A" }}</td>
+                    <td class="px-4 py-1">{{ farmer.name }}</td>
+                    <td class="px-4 py-1">{{ farmer.phone }}</td>
+                    <td class="px-4 py-1">{{ farmer.total_farms }}</td>
+                    <td class="px-4 py-1">{{ farmer.total_acreage }} acres</td>
+                    <td class="px-4 py-1">{% if farmer.farms.first %}{{ farmer.farms.first.location }}{% else %}No location{% endif %}</td>
+                    <td class="px-4 py-1">
+                        <a href="{% url 'farmer_details' farmer.id %}" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
     {% else %}

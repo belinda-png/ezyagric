@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Actual Field Activities</h2>
+        <a href="{% url 'actualactivity_create' %}" class="btn btn-primary">+ Add Actual Activity</a>
+    </div>
+
+    <div class="table-header">
+        <div>SEASON</div>
+        <div>ACTIVITY</div>
+        <div>DATE</div>
+        <div>COST (UGX)</div>
+        <div>NOTES</div>
+    </div>
+
+    {% for act in activities %}
+    <div class="table-row">
+        <div>{{ act.season_plan.crop_name }}</div>
+        <div>{{ act.activity_type }}</div>
+        <div>{{ act.actual_date }}</div>
+        <div>{{ act.actual_cost_ugx }}</div>
+        <div>{{ act.notes|default:"-" }}</div>
+    </div>
+    {% empty %}
+    <p class="empty-text">No actual activities recorded.</p>
+    {% endfor %}
+</div>
+{% endblock %}

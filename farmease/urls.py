@@ -26,15 +26,31 @@ urlpatterns = [
     # Farmer management URLs
     path('base/', views.base, name='base'),
     path('add/', views.add_farmer, name='add_farmer'),
-    path('farmer/<str:farmer_id>/', views.farmer_details, name='farmer_details'),
-    path('farmer/<str:farmer_id>/edit/', views.edit_farmer, name='edit_farmer'),
-    path('farmer/<str:farmer_id>/delete/', views.delete_farmer, name='delete_farmer'),
+    path("farmer/<int:farmer_id>/", views.farmer_details, name="farmer_details"),
+    path('farmer/<int:farmer_id>/edit/', views.edit_farmer, name='edit_farmer'),
+    path('farmer/<int:farmer_id>/delete/', views.delete_farmer, name='delete_farmer'),
     
     # Farm management URLs
-    path('farmer/<str:farmer_id>/add-farm/', views.add_farm, name='add_farm'),
+    path('farmer/<int:farmer_id>/add_farm/', views.add_farm, name='add_farm'),
     path('farm/<int:farm_id>/edit/', views.edit_farm, name='edit_farm'),
     path('farm/<int:farm_id>/delete/', views.delete_farm, name='delete_farm'),
-    # Farmers
+      # SEASON PLAN
+    path("seasonplans/", views.seasonplan_list, name="seasonplan_list"),
+    path("seasonplans/create/", views.seasonplan_create, name="seasonplan_create"),
+    path("seasonplans/edit/<int:pk>/", views.seasonplan_edit, name="seasonplan_edit"),
+    path("seasonplans/delete/<int:pk>/", views.seasonplan_delete, name="seasonplan_delete"),
+
+    # PLANNED ACTIVITIES
+    path("plannedactivities/", views.plannedactivities_list, name="plannedactivities_list"),
+    path("plannedactivities/create/", views.plannedactivity_create, name="plannedactivity_create"),
+    path("plannedactivities/edit/<int:pk>/", views.plannedactivity_edit, name="plannedactivity_edit"),
+    path("plannedactivities/delete/<int:pk>/", views.plannedactivity_delete, name="plannedactivity_delete"),
+
+    # ACTUAL ACTIVITIES
+    path("actualactivities/", views.actualactivities_list, name="actualactivities_list"),
+    path("actualactivities/create/", views.actualactivity_create, name="actualactivity_create"),
+    path("actualactivities/edit/<int:pk>/", views.actualactivity_edit, name="actualactivity_edit"),
+    path("actualactivities/delete/<int:pk>/", views.actualactivity_delete, name="actualactivity_delete"),
     # path('farmers/', views.farmer_list, name='farmer_list'),
     # path('farmers/create/', views.create_farmer, name='create_farmer'),
 
