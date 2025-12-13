@@ -360,8 +360,9 @@ def actualactivity_create(request):
 
     return render(request, "actualactivity_form.html", {
         "form": form,
-        "title": "Create Actual Activity"
+        "title": "Log Actual Activity"
     })
+
 def actualactivity_edit(request, pk):
     act = ActualActivity.objects.get(id=pk)
     form = ActualActivityForm(instance=act)

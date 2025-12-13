@@ -1,10 +1,100 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding: 24px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        border-radius: 8px;
+        color: white;
+    }
+
+    .page-header-content h1 {
+        font-size: 28px;
+        font-weight: 700;
+        margin: 0 0 8px 0;
+    }
+
+    .page-header-content p {
+        margin: 0;
+        opacity: 0.9;
+        font-size: 14px;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 10px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .back-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateX(-2px);
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 12px;
+    }
+
+    .btn-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 10px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-action:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+    }
+
+    .btn-action.primary {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-action.primary:hover {
+        background: rgba(255, 255, 255, 0.4);
+    }
+</style>
+
+<div class="page-header">
+    <div class="page-header-content">
+        <h1>Actual Field Activities</h1>
+        <p>Log and track activities carried out in the field</p>
+    </div>
+    <div class="action-buttons">
+        <a href="{% url 'dashboard' %}" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+        <a href="{% url 'actualactivity_create' %}" class="btn-action primary">
+            <i class="fas fa-plus"></i> Add Activity
+        </a>
+    </div>
+</div>
+
 <div class="card">
     <div class="card-header">
-        <h2>Actual Field Activities</h2>
-        <a href="{% url 'actualactivity_create' %}" class="btn btn-primary">+ Add Actual Activity</a>
+        <h2>Activities List</h2>
     </div>
 
     <div class="table-header">
@@ -16,7 +106,7 @@
     </div>
 
     {% for act in activities %}
-    <div class="table-row">
+    <div class="farmer-row">
         <div>{{ act.season_plan.crop_name }}</div>
         <div>{{ act.activity_type }}</div>
         <div>{{ act.actual_date }}</div>
@@ -24,7 +114,10 @@
         <div>{{ act.notes|default:"-" }}</div>
     </div>
     {% empty %}
-    <p class="empty-text">No actual activities recorded.</p>
+    <div class="empty-state">
+        <div class="empty-state-icon">📋</div>
+        <p>No actual activities recorded yet.</p>
+    </div>
     {% endfor %}
 </div>
 {% endblock %}

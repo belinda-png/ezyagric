@@ -23,32 +23,62 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    padding: 24px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 8px;
+    color: white;
 }
 
-.page-header h2 {
-    margin: 0;
-    font-size: 26px;
+.page-header-content h2 {
+    margin: 0 0 8px 0;
+    font-size: 28px;
     font-weight: 700;
 }
 
-.page-header p {
+.page-header-content p {
     margin: 0;
-    color: #666;
+    opacity: 0.9;
+    font-size: 14px;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateX(-2px);
 }
 
 .btn-add {
-    background: #10b981;
+    background: rgba(255, 255, 255, 0.2);
     color: white;
-    padding: 10px 18px;
+    padding: 10px 16px;
     border-radius: 6px;
     text-decoration: none;
     font-size: 15px;
     transition: 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
 }
 
 .btn-add:hover {
-    background: #059669;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
 }
 
 .search-box {
@@ -78,11 +108,18 @@
 <div class="farmers-container">
 
     <div class="page-header">
-        <div>
+        <div class="page-header-content">
             <h2>Registered Farmers</h2>
             <p>Manage farmers and their property details</p>
         </div>
-        <a href="{% url 'add_farmer' %}" class="btn-add">+ Add Farmer</a>
+        <div style="display: flex; gap: 12px;">
+            <a href="{% url 'dashboard' %}" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+            <a href="{% url 'add_farmer' %}" class="btn-add">
+                <i class="fas fa-plus"></i> Add Farmer
+            </a>
+        </div>
     </div>
 
     <form method="GET" class="search-box">
@@ -92,29 +129,29 @@
 
     {% if farmers %}
     <div class="overflow-x-auto">
-        <table class="min-w-full bg-white border border-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-4 py-2 text-left">Farmer ID</th>
-                    <th class="px-4 py-2 text-left">Name</th>
-                    <th class="px-4 py-2 text-left">Phone</th>
-                    <th class="px-4 py-2 text-left">Total Farms</th>
-                    <th class="px-4 py-2 text-left">Total Acreage</th>
-                    <th class="px-4 py-2 text-left">Location</th>
-                    <th class="px-4 py-2 text-left">Action</th>
+        <table class="min-w-full bg-white rounded-lg shadow">
+            <thead>
+                <tr style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
+                    <th class="px-6 py-4 text-left font-bold text-sm">Farmer ID</th>
+                    <th class="px-6 py-4 text-left font-bold text-sm">Name</th>
+                    <th class="px-6 py-4 text-left font-bold text-sm">Phone</th>
+                    <th class="px-6 py-4 text-left font-bold text-sm">Total Farms</th>
+                    <th class="px-6 py-4 text-left font-bold text-sm">Total Acreage</th>
+                    <th class="px-6 py-4 text-left font-bold text-sm">Location</th>
+                    <th class="px-6 py-4 text-left font-bold text-sm">Action</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200">
+            <tbody>
                 {% for farmer in farmers %}
-                <tr>
-                    <td class="px-4 py-1">{{ farmer.farmer_id|default:"N/A" }}</td>
-                    <td class="px-4 py-1">{{ farmer.name }}</td>
-                    <td class="px-4 py-1">{{ farmer.phone }}</td>
-                    <td class="px-4 py-1">{{ farmer.total_farms }}</td>
-                    <td class="px-4 py-1">{{ farmer.total_acreage }} acres</td>
-                    <td class="px-4 py-1">{% if farmer.farms.first %}{{ farmer.farms.first.location }}{% else %}No location{% endif %}</td>
-                    <td class="px-4 py-1">
-                        <a href="{% url 'farmer_details' farmer.id %}" class="bg-emerald-500 text-white px-3 py-1 rounded text-sm hover:bg-emerald-600">View</a>
+                <tr style="border-bottom: 1px solid #e8e8e8; transition: all 0.2s;" onmouseover="this.style.backgroundColor='#f0fdf4'; this.style.boxShadow='0 2px 8px rgba(16, 185, 129, 0.1)';" onmouseout="this.style.backgroundColor='white'; this.style.boxShadow='none';">
+                    <td class="px-6 py-5 text-sm font-medium text-gray-900">{{ farmer.farmer_id|default:"N/A" }}</td>
+                    <td class="px-6 py-5 text-sm font-semibold text-gray-900">{{ farmer.name }}</td>
+                    <td class="px-6 py-5 text-sm text-gray-700">{{ farmer.phone }}</td>
+                    <td class="px-6 py-5 text-sm text-gray-700">{{ farmer.total_farms }}</td>
+                    <td class="px-6 py-5 text-sm text-gray-700">{{ farmer.total_acreage }} acres</td>
+                    <td class="px-6 py-5 text-sm text-gray-700">{% if farmer.farms.first %}{{ farmer.farms.first.location }}{% else %}No location{% endif %}</td>
+                    <td class="px-6 py-5 text-sm">
+                        <a href="{% url 'farmer_details' farmer.id %}" class="bg-emerald-500 text-white px-4 py-2 rounded font-medium hover:bg-emerald-600 transition">View</a>
                     </td>
                 </tr>
                 {% endfor %}

@@ -317,6 +317,13 @@ body {
                 </a>
             </li>
             <li>
+                <a href="{% url 'actualactivities_list' %}">
+                    <i class="fas fa-calendar-check"></i>
+                    Actual Activities
+                </a>
+            </li>    
+            
+            <li>
                 <a href="{% url 'plannedactivities_list' %}">
                     <i class="fas fa-tasks"></i>
                     Field Activities
@@ -423,7 +430,6 @@ body {
                     <div class="season-details">{{ season.farm.name }} • {{ season.farm.farmer.name }}</div>
                     <div class="season-meta">
                         <span>Start: {% if season.start_date %}{{ season.start_date|date:"M d, Y" }}{% else %}Not set{% endif %}</span>
-                        <span><a href="{% url 'seasonplan_detail' season.id %}" style="color: #10b981; text-decoration: none;">View Details</a></span>
                     </div>
                 </div>
                 {% empty %}
@@ -437,7 +443,12 @@ body {
 
             <!-- Activity -->
             <div class="section">
-                <h2 class="section-title">Activities</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <h2 class="section-title" style="margin: 0;">Activities</h2>
+                   
+                        <i class="fas fa-plus"></i>Log Activity
+                    </a>
+                </div>
                 
                 {% if all_activities %}
                     {% for act in all_activities %}
@@ -461,7 +472,12 @@ body {
 
             <!-- Planned Activities -->
             <div class="section">
-                <h2 class="section-title">Planned Activities</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <h2 class="section-title" style="margin: 0;">Planned Activities</h2>
+                    
+                        <i class="fas fa-plus"></i>Add Activity
+                    </a>
+                </div>
                 
                 {% if all_planned_activities %}
                     {% for activity in all_planned_activities %}

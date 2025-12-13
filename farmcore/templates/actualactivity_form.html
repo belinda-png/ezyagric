@@ -1,178 +1,399 @@
 {% extends "base.html" %}
 
-{% block title %}{{ title }} - EzyAgric{% endblock %}
-
 {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
-    .form-container {
-        max-width: 800px;
-        margin: 0 auto;
-        background: white;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    body {
+        background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
+        min-height: 100vh;
     }
-    
-    .form-header {
+
+    .page-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 30px;
+        padding: 24px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        border-radius: 8px;
+        color: white;
+    }
+
+    .page-header-content h1 {
+        font-size: 28px;
+        font-weight: 700;
+        margin: 0 0 8px 0;
+    }
+
+    .page-header-content p {
+        margin: 0;
+        opacity: 0.9;
+        font-size: 14px;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 10px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .back-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateX(-2px);
+    }
+
+    .form-wrapper {
+        max-width: 650px;
+        margin: 0 auto;
+    }
+
+    .form-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 30px;
         padding-bottom: 20px;
         border-bottom: 2px solid #f0f0f0;
     }
-    
-    .form-header h2 {
-        margin: 0;
-        font-size: 24px;
-        color: #1e293b;
-    }
-    
+
     .form-group {
-        margin-bottom: 20px;
+        margin-bottom: 24px;
     }
-    
+
     .form-group label {
         display: block;
-        margin-bottom: 8px;
         font-weight: 600;
-        color: #1e293b;
+        color: #1a1a1a;
+        margin-bottom: 8px;
         font-size: 14px;
     }
-    
+
     .form-group input,
     .form-group select,
     .form-group textarea {
         width: 100%;
         padding: 12px 14px;
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
+        border: none;
+        border-bottom: 2px solid #e0e0e0;
+        border-radius: 0;
         font-size: 14px;
         font-family: inherit;
         transition: all 0.3s;
-        background-color: #f8fafc;
+        background-color: #f0fdf4;
+        color: #1a1a1a;
     }
-    
+
+    .form-group input[type="date"] {
+        cursor: pointer;
+    }
+
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+        border-radius: 4px;
+        margin-right: 2px;
+        opacity: 0.6;
+        filter: invert(0.3);
+    }
+
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator:hover {
+        opacity: 1;
+    }
+
+    /* Custom Calendar Styles */
+    .calendar-wrapper {
+        position: relative;
+    }
+
+    .calendar-input {
+        position: relative;
+    }
+
+    .calendar-input::after {
+        content: "📅";
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 18px;
+        pointer-events: none;
+    }
+
+    .calendar-popup {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        border: 2px solid #10b981;
+        border-radius: 8px;
+        padding: 16px;
+        margin-top: 8px;
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+        z-index: 1000;
+        min-width: 320px;
+    }
+
+    .calendar-popup.active {
+        display: block;
+    }
+
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .calendar-header button {
+        background: #10b981;
+        color: white;
+        border: none;
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.2s;
+    }
+
+    .calendar-header button:hover {
+        background: #059669;
+        transform: scale(1.1);
+    }
+
+    .calendar-header h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #1a1a1a;
+    }
+
+    .calendar-weekdays {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+        margin-bottom: 8px;
+    }
+
+    .calendar-weekday {
+        text-align: center;
+        font-weight: 600;
+        color: #10b981;
+        font-size: 12px;
+        padding: 8px 0;
+    }
+
+    .calendar-days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+    }
+
+    .calendar-day {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s;
+        border: 2px solid transparent;
+        color: #1a1a1a;
+    }
+
+    .calendar-day:hover:not(.disabled):not(.other-month) {
+        background: #f0fdf4;
+        border-color: #10b981;
+    }
+
+    .calendar-day.today {
+        background: #e0f2fe;
+        border-color: #10b981;
+        font-weight: 700;
+    }
+
+    .calendar-day.selected {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        font-weight: 700;
+    }
+
+    .calendar-day.other-month {
+        color: #ccc;
+        cursor: default;
+    }
+
+    .calendar-day.disabled {
+        color: #ccc;
+        cursor: not-allowed;
+    }
+
+    .calendar-footer {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 2px solid #f0f0f0;
+    }
+
+    .calendar-footer button {
+        flex: 1;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s;
+        font-size: 13px;
+    }
+
+    .calendar-footer .btn-clear {
+        background: #f0f0f0;
+        color: #333;
+    }
+
+    .calendar-footer .btn-clear:hover {
+        background: #e0e0e0;
+    }
+
+    .calendar-footer .btn-today {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+    }
+
+    .calendar-footer .btn-today:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .form-group input::placeholder,
+    .form-group select::placeholder,
+    .form-group textarea::placeholder {
+        color: #999;
+    }
+
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
         outline: none;
-        border-color: #10b981;
-        background-color: white;
-        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        border-bottom-color: #10b981;
+        background-color: #e0f2fe;
+        box-shadow: none;
     }
-    
+
     .form-group textarea {
         resize: vertical;
         min-height: 100px;
     }
-    
-    .form-actions {
+
+    .form-group .errorlist {
+        margin-top: 6px;
+        color: #dc3545;
+        font-size: 13px;
+        list-style: none;
+        padding: 0;
+    }
+
+    .form-group .errorlist li {
+        margin-bottom: 4px;
+    }
+
+    .button-group {
         display: flex;
         gap: 12px;
         margin-top: 30px;
         padding-top: 20px;
         border-top: 2px solid #f0f0f0;
     }
-    
+
     .btn {
         padding: 12px 24px;
         border: none;
-        border-radius: 8px;
-        cursor: pointer;
+        border-radius: 6px;
         font-size: 14px;
         font-weight: 600;
-        transition: all 0.3s;
+        cursor: pointer;
         text-decoration: none;
         display: inline-block;
+        transition: all 0.3s;
     }
-    
+
     .btn-primary {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: white;
     }
-    
+
     .btn-primary:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
-    
+
     .btn-secondary {
-        background: #6b7280;
-        color: white;
+        background: #f0f0f0;
+        color: #333;
     }
-    
+
     .btn-secondary:hover {
-        background: #4b5563;
+        background: #e0e0e0;
     }
-    
-    .form-group .errorlist {
-        margin-top: 5px;
-        color: #dc3545;
-        font-size: 13px;
-        list-style: none;
-        padding: 0;
-    }
-    
-    .form-group .errorlist li {
-        margin-bottom: 4px;
-    }
-    
-    .back-link {
-        color: #10b981;
-        text-decoration: none;
-        font-size: 14px;
-        margin-bottom: 20px;
-        display: inline-block;
-        font-weight: 500;
-    }
-    
-    .back-link:hover {
-        text-decoration: underline;
-    }
-    
-    .back-link::before {
-        content: "← ";
+
+    @media (max-width: 600px) {
+        .button-group {
+            flex-direction: column;
+        }
+
+        .button-group .btn {
+            width: 100%;
+            text-align: center;
+        }
     }
 </style>
 
-<a href="{% url 'actualactivities_list' %}" class="back-link">Back to Activities</a>
-
-<div class="form-container">
-    <div class="form-header">
-        <h2>{{ title }}</h2>
+<div class="page-header">
+    <div class="page-header-content">
+        <h1>{{ title }}</h1>
+        <p>Log actual field activities and costs</p>
     </div>
+    <a href="{% url 'actualactivities_list' %}" class="back-button">
+        <i class="fas fa-arrow-left"></i> Back to Activities
+    </a>
+</div>
 
+<div class="form-wrapper">
+    
     <form method="POST">
         {% csrf_token %}
         
         {% for field in form %}
-            <div class="form-group">
-                <label for="{{ field.id_for_label }}">
-                    {{ field.label }}
-                    {% if field.field.required %}<span style="color: #dc3545;">*</span>{% endif %}
-                </label>
-                {{ field }}
-                {% if field.errors %}
-                    <div style="color: #dc3545; font-size: 13px; margin-top: 4px;">
-                        {{ field.errors }}
-                    </div>
-                {% endif %}
-                {% if field.help_text %}
-                    <div style="color: #666; font-size: 12px; margin-top: 4px;">
-                        {{ field.help_text|safe }}
-                    </div>
-                {% endif %}
-            </div>
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">
+                {{ field.label }}
+                {% if field.field.required %}<span style="color: #dc3545;">*</span>{% endif %}
+            </label>
+            {{ field }}
+            {% if field.errors %}
+                <div style="color: #dc3545; font-size: 13px; margin-top: 6px;">
+                    {{ field.errors }}
+                </div>
+            {% endif %}
+        </div>
         {% endfor %}
         
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i> Save Activity
-            </button>
-            <a href="{% url 'actualactivities_list' %}" class="btn btn-secondary">
-                <i class="fas fa-times"></i> Cancel
-            </a>
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">Save Activity</button>
+            <a href="{% url 'actualactivities_list' %}" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
 </div>
