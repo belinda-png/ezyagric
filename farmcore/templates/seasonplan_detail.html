@@ -94,11 +94,11 @@
                 <a href="{% url 'seasonplan_list' %}" class="back-button">
                     <i class="fas fa-arrow-left"></i> Back
                 </a>
-                <a href="{% url 'seasonplan_summary' plan.id %}" class="btn-action">
-                    <i class="fas fa-chart-bar"></i> Summary
-                </a>
                 <a href="{% url 'seasonplan_edit' plan.id %}" class="btn-action primary">
                     <i class="fas fa-edit"></i> Edit
+                </a>
+                <a href="{% url 'seasonplan_delete' plan.id %}" class="btn-action" style="background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.3);">
+                    <i class="fas fa-trash"></i> Delete
                 </a>
             </div>
         </div>
@@ -157,17 +157,13 @@
                     <tbody>
                         {% for activity in planned_activities %}
                         <tr style="border-bottom: 1px solid #e8e8e8; transition: all 0.2s;" onmouseover="this.style.backgroundColor='#f0fdf4';" onmouseout="this.style.backgroundColor='white';">
-                            <td class="px-6 py-5 text-sm font-semibold text-gray-900">{{ activity.get_activity_type_display }}</td>
-                            <td class="px-6 py-5 text-sm font-medium text-gray-900">{{ activity.target_date|date:"M d, Y" }}</td>
-                            <td class="px-6 py-5 text-sm font-medium text-gray-900">
+                            <td class="px-6 py-5 text-base font-semibold text-gray-900">{{ activity.get_activity_type_display }}</td>
+                            <td class="px-6 py-5 text-base font-medium text-gray-900">{{ activity.target_date|date:"M d, Y" }}</td>
+                            <td class="px-6 py-5 text-base font-medium text-gray-900">
                                 {% if activity.estimated_cost_ugx %}UGX {{ activity.estimated_cost_ugx|floatformat:0 }}{% else %}Not set{% endif %}
                             </td>
-                            <td class="px-6 py-5 text-sm">
-                                {% if activity.actual_activities.exists %}
-                                    <span class="px-3 py-2 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold">Completed</span>
-                                {% else %}
-                                    <span class="px-3 py-2 bg-yellow-100 text-yellow-800 rounded-full text-xs font-bold">Pending</span>
-                                {% endif %}
+                            <td class="px-6 py-5 text-base">
+                                <span class="px-3 py-2 bg-yellow-100 text-yellow-800 rounded-full text-xs font-bold">Pending</span>
                             </td>
                         </tr>
                         {% endfor %}
@@ -202,10 +198,10 @@
                     <tbody>
                         {% for activity in actual_activities %}
                         <tr style="border-bottom: 1px solid #e8e8e8; transition: all 0.2s;" onmouseover="this.style.backgroundColor='#f0fdf4';" onmouseout="this.style.backgroundColor='white';">
-                            <td class="px-6 py-5 text-sm font-semibold text-gray-900">{{ activity.get_activity_type_display }}</td>
-                            <td class="px-6 py-5 text-sm font-medium text-gray-900">{{ activity.actual_date|date:"M d, Y" }}</td>
-                            <td class="px-6 py-5 text-sm font-medium text-gray-900">UGX {{ activity.actual_cost_ugx|floatformat:0 }}</td>
-                            <td class="px-6 py-5 text-sm text-gray-700">{{ activity.notes|truncatewords:10 }}</td>
+                            <td class="px-6 py-5 text-base font-semibold text-gray-900">{{ activity.get_activity_type_display }}</td>
+                            <td class="px-6 py-5 text-base font-medium text-gray-900">{{ activity.actual_date|date:"M d, Y" }}</td>
+                            <td class="px-6 py-5 text-base font-medium text-gray-900">UGX {{ activity.actual_cost_ugx|floatformat:0 }}</td>
+                            <td class="px-6 py-5 text-base text-gray-700">{{ activity.notes|truncatewords:10 }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

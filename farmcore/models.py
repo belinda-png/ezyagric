@@ -67,7 +67,7 @@ class ActualActivity(models.Model):
     actual_date = models.DateField()
     actual_cost_ugx = models.FloatField()
     notes = models.CharField(max_length=255, blank=True, null=True)
-    # planned_activity = models.ForeignKey(PlannedActivity, on_delete=models.SET_NULL, null=True, blank=True, related_name='actual_activities')
+    planned_activity = models.ForeignKey(PlannedActivity, on_delete=models.SET_NULL, null=True, blank=True, related_name='actual_activities')
 
     def __str__(self):
         return f"{self.activity_type} ({self.season_plan})"    

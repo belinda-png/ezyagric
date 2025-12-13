@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,6 +22,11 @@ body {
 .container {
     display: flex;
     min-height: 100vh;
+}
+.logo-img {
+    width: 40px;      /* adjust size */
+    height: auto;
+    object-fit: contain;
 }
 
 /* Sidebar */
@@ -289,7 +295,7 @@ body {
     <aside class="sidebar">
         <div class="logo">
             <div class="logo-icon">
-                <i class="fas fa-seedling"></i>
+                <img src="{% static 'images/logo.png' %}" alt="EzyAgric Logo" class="logo-img">
             </div>
             <div class="logo-text">
                 <h2>EzyAgric</h2>
@@ -329,16 +335,17 @@ body {
                     Field Activities
                 </a>
             </li>
+            <li>
+                <a href="{% url 'season_summary_page' %}">
+                    <i class="fas fa-chart-bar"></i>
+                    Season Summary
+                </a>
+            </li>
         </ul>
 
         <div class="menu-bottom">
             <ul class="menu">
-                <li>
-                    <a href="#">
-                        <i class="fas fa-cog"></i>
-                        Settings
-                    </a>
-                </li>
+              
                 <li>
                     <a href="{% url 'logout' %}">
                         <i class="fas fa-sign-out-alt"></i>

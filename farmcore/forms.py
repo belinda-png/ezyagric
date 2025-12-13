@@ -35,6 +35,6 @@ class PlannedActivityForm(forms.ModelForm):
 class ActualActivityForm(forms.ModelForm):
     class Meta:
         model = ActualActivity
-        fields = ['season_plan', 'activity_type', 'actual_date', 'actual_cost_ugx',  'notes']
+        fields = ['season_plan', 'activity_type', 'actual_date', 'actual_cost_ugx',  'notes', 'planned_activity']
         widgets ={'actual_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
               }

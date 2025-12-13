@@ -123,16 +123,16 @@
                     {% for plan in plans %}
                     <tr style="border-bottom: 1px solid #e8e8e8; transition: all 0.2s;" onmouseover="this.style.backgroundColor='#f0fdf4'; this.style.boxShadow='0 2px 8px rgba(16, 185, 129, 0.1)';" onmouseout="this.style.backgroundColor='white'; this.style.boxShadow='none';">
                         <td class="px-6 py-5 whitespace-nowrap">
-                            <a href="{% url 'seasonplan_detail' plan.id %}" class="text-sm font-semibold text-emerald-600 hover:text-emerald-900">
+                            <a href="{% url 'seasonplan_detail' plan.id %}" class="text-base font-semibold text-emerald-600 hover:text-emerald-900">
                                 {{ plan.crop_name }}
                             </a>
                         </td>
                         <td class="px-6 py-5 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">{{ plan.get_season_name_display }}</div>
+                            <div class="text-base font-medium text-gray-900">{{ plan.get_season_name_display }}</div>
                         </td>
                         <td class="px-6 py-5 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">{{ plan.farm.name }}</div>
-                            <div class="text-sm text-gray-600">{{ plan.farm.farmer.name }}</div>
+                            <div class="text-base font-medium text-gray-900">{{ plan.farm.name }}</div>
+                            <div class="text-base text-gray-600">{{ plan.farm.farmer.name }}</div>
                         </td>
                         <td class="px-6 py-5 whitespace-nowrap">
                             {% if plan.status == 'is_active' %}
@@ -150,7 +150,7 @@
                             {% endif %}
                         </td>
                         <td class="px-6 py-5 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">
+                            <div class="text-base font-medium text-gray-900">
                                 {% if plan.start_date %}
                                     {{ plan.start_date|date:"M d, Y" }}
                                 {% else %}
@@ -158,20 +158,9 @@
                                 {% endif %}
                             </div>
                         </td>
-                        <td class="px-6 py-5 whitespace-nowrap text-sm font-medium space-x-3">
+                        <td class="px-6 py-5 whitespace-nowrap text-base font-medium">
                             <a href="{% url 'seasonplan_detail' plan.id %}" class="text-emerald-600 hover:text-emerald-900 font-semibold" title="View Details">
                                 <i class="fas fa-eye"></i> View
-                            </a>
-                            <a href="{% url 'seasonplan_summary' plan.id %}" class="text-cyan-600 hover:text-cyan-900 font-semibold" title="View Summary">
-                                <i class="fas fa-chart-bar"></i> Summary
-                            </a>
-                            <a href="{% url 'seasonplan_edit' plan.id %}" class="text-blue-600 hover:text-blue-900 font-semibold" title="Edit">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                            <a href="{% url 'seasonplan_delete' plan.id %}" 
-                               class="text-red-600 hover:text-red-900 font-semibold"
-                               title="Delete">
-                                <i class="fas fa-trash"></i> Delete
                             </a>
                         </td>
                     </tr>

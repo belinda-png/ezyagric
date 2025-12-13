@@ -58,6 +58,12 @@ def dashboard(request):
     # Farmers with farms for the table
     farmers_with_farms = Farmer.objects.prefetch_related('farms').all()
 
+    # Season plan summary statistics
+    completed_seasons = SeasonPlan.objects.filter(status='completed').count()
+    pending_seasons = SeasonPlan.objects.filter(status='planned').count()
+    active_seasons_count = SeasonPlan.objects.filter(status='is_active').count()
+    total_seasons = SeasonPlan.objects.count()
+
     context = {
         "total_farmers": total_farmers,
         "active_seasons": active_seasons,
@@ -66,6 +72,10 @@ def dashboard(request):
         "all_season_list": all_season_list,
         "all_activities": all_activities,
         "farmers_with_farms": farmers_with_farms,
+        "completed_seasons": completed_seasons,
+        "pending_seasons": pending_seasons,
+        "active_seasons_count": active_seasons_count,
+        "total_seasons": total_seasons,
     }
 
     return render(request, "dashboard.html", context)
@@ -371,3 +381,26 @@ def actualactivity_delete(request, pk):
     act = ActualActivity.objects.get(id=pk)
     act.delete()
     return redirect("actualactivities_list")
+
+@login_required(login_url='login')
+def season_summary_page(request):
+    """Display overall season summary statistics"""
+    completed_seasons = SeasonPlan.objects.filter(status='completed')
+    pending_seasons = SeasonPlan.objects.filter(status='planned')
+    active_seasons = SeasonPlan.objects.filter(status='is_active')
+    
+    completed_count = completed_seasons.count()
+    pending_count = pending_seasons.count()
+    active_count = active_seasons.count()
+    total_count = SeasonPlan.objects.count()
+    
+    context = {
+        'completed_seasons': completed_seasons,
+        'pending_seasons': pending_seasons,
+        'active_seasons': active_seasons,
+        'completed_count': completed_count,
+        'pending_count': pending_count,
+        'active_count': active_count,
+        'total_count': total_count,
+    }
+    return render(request, 'season_summary_page.html', context)
