@@ -21,7 +21,7 @@ from farmcore import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.login_view, name='login'),
-    path('login/', views.login_view, name='login_alt'),
+    # path('login/', views.login_view, name='login_alt'),
     path('logout/', views.logout_view, name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('farmer/', views.farmers, name='farmer'),
@@ -55,25 +55,4 @@ urlpatterns = [
     path("actualactivities/create/", views.actualactivity_create, name="actualactivity_create"),
     path("actualactivities/edit/<int:pk>/", views.actualactivity_edit, name="actualactivity_edit"),
     path("actualactivities/delete/<int:pk>/", views.actualactivity_delete, name="actualactivity_delete"),
-    # path('farmers/', views.farmer_list, name='farmer_list'),
-    # path('farmers/create/', views.create_farmer, name='create_farmer'),
-
-    # # Farms
-    # path('farms/', views.farm_list, name='farm_list'),
-    # path('farms/create/', views.create_farm, name='create_farm'),
-
-    # # Season Plans
-    # path('seasons/', views.seasonplan_list, name='seasonplan_list'),
-    # path('seasons/create/', views.create_seasonplan, name='create_seasonplan'),
-
-    # # Planned Activities
-    # path('planned-activities/', views.planned_activity_list, name='planned_activity_list'),
-    # path('planned-activities/create/', views.create_planned_activity, name='create_planned_activity'),
-
-    # # Actual Activities
-    # path('actual-activities/', views.actual_activity_list, name='actual_activity_list'),
-    # path('actual-activities/create/', views.create_actual_activity, name='create_actual_activity'),
-
-    # # Optional: Season summary
-    # path('seasons/<int:season_id>/summary/', views.season_summary, name='season_summary'),
 ]

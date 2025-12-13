@@ -66,3 +66,8 @@ pip freeze > requirements.txt
 ** test 
 python manage.py test 
 pytest
+*** deployment
+Add guniconr to requirements.txt
+Set DEBUG=False and configure ALLOWED_HOSTS
+pusht the project to github
+create a new web serivce on render 

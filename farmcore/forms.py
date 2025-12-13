@@ -1,4 +1,4 @@
-from farmcore.models import Farmer, SeasonPlan, PlannedActivity, ActualActivity, Farm
+from farmcore.models import *
 from django import forms
 
 class FarmerForm(forms.ModelForm):
@@ -35,6 +35,6 @@ class PlannedActivityForm(forms.ModelForm):
 class ActualActivityForm(forms.ModelForm):
     class Meta:
         model = ActualActivity
-        fields = ['season_plan', 'activity_type', 'actual_date', 'actual_cost_ugx',  'planned_activity']
+        fields = ['season_plan', 'activity_type', 'actual_date', 'actual_cost_ugx',  'notes']
         widgets ={'actual_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
               }

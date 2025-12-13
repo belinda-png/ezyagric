@@ -55,9 +55,6 @@ def dashboard(request):
     # All activities
     all_activities = ActualActivity.objects.all().order_by("-actual_date")
 
-    # All planned activities
-    all_planned_activities = PlannedActivity.objects.all().select_related("season_plan").order_by("target_date")
-
     # Farmers with farms for the table
     farmers_with_farms = Farmer.objects.prefetch_related('farms').all()
 
@@ -68,7 +65,6 @@ def dashboard(request):
         "total_investment": total_investment,
         "all_season_list": all_season_list,
         "all_activities": all_activities,
-        "all_planned_activities": all_planned_activities,
         "farmers_with_farms": farmers_with_farms,
     }
 
@@ -76,7 +72,7 @@ def dashboard(request):
 
 
 
-@login_required(login_url='login')
+
 def farmers(request):
     """Display list of all registered farmers"""
     search_query = request.GET.get('search', '')
@@ -261,8 +257,8 @@ def seasonplan_edit(request, pk):
         "form": form,
         "title": "Edit Season Plan",
         "plan": plan,
-        # "planned_count": planned_count,
-        # "completed_count": completed_count,
+         "planned_count": planned_count,
+         "completed_count": completed_count,
     })
 def seasonplan_delete(request, pk):
     plan = SeasonPlan.objects.get(id=pk)
@@ -283,22 +279,16 @@ def seasonplan_detail(request, pk):
     return render(request, 'seasonplan_detail.html', context)
 
 def seasonplan_summary(request, pk):
-    """Display season plan summary with statuses, cost summary, and overdue count"""
-    from django.utils import timezone
-    
     plan = SeasonPlan.objects.get(id=pk)
     planned_activities = PlannedActivity.objects.filter(season_plan=plan)
     actual_activities = ActualActivity.objects.filter(season_plan=plan)
     
     today = timezone.now().date()
-    
-    # Calculate overdue tasks
     overdue_tasks = planned_activities.filter(
         target_date__lt=today,
         actual_activities__isnull=True
     ).count()
     
-    # Calculate total costs
     planned_cost = sum(float(a.estimated_cost_ugx or 0) for a in planned_activities)
     actual_cost = sum(float(a.actual_cost_ugx or 0) for a in actual_activities)
     

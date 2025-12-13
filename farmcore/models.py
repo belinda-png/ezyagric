@@ -8,12 +8,10 @@ class Farmer(models.Model):
     
     def __str__(self):
         return self.name
-    
-    # @property
+
     def total_farms(self):
         return self.farms.count()
     
-    # @property
     def total_acreage(self):
         return sum(farm.size_in_acres for farm in self.farms.all())
 
@@ -28,9 +26,8 @@ class Farm(models.Model):
     
 class SeasonPlan(models.Model):
     SEASON_CHOICES = [
-        ('season_a', 'Season A (March - July) - Long Rains'),
-        ('season_b', 'Season B (August - November) - Short Rains'),
-        ('season_c', 'Season C (December - February) - Dry Season'),
+        ('rainy', 'Rainy'),
+        ('sunny', 'Sunny'),
     ]
     
     STATUS_CHOICES = [
@@ -69,8 +66,8 @@ class ActualActivity(models.Model):
     activity_type = models.CharField(max_length=50, choices=PlannedActivity.ACTIVITY_CHOICES)
     actual_date = models.DateField()
     actual_cost_ugx = models.FloatField()
-    notes = models.TextField(blank=True, null=True)
-    planned_activity = models.ForeignKey(PlannedActivity, on_delete=models.SET_NULL, null=True, blank=True, related_name='actual_activities')
+    notes = models.CharField(max_length=255, blank=True, null=True)
+    # planned_activity = models.ForeignKey(PlannedActivity, on_delete=models.SET_NULL, null=True, blank=True, related_name='actual_activities')
 
     def __str__(self):
         return f"{self.activity_type} ({self.season_plan})"    

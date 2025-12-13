@@ -24,7 +24,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
-    padding: 24px;
+    padding: 10px;
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     border-radius: 8px;
     color: white;
@@ -32,20 +32,21 @@
 
 .page-header-content h2 {
     margin: 0 0 8px 0;
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 700;
 }
 
 .page-header-content p {
     margin: 0;
     opacity: 0.9;
-    font-size: 14px;
+    font-size: 15px;
+    
 }
 
 .back-button {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    /* gap: 8px; */
     background: rgba(255, 255, 255, 0.2);
     color: white;
     padding: 10px 16px;
@@ -128,10 +129,10 @@
     </form>
 
     {% if farmers %}
-    <div class="overflow-x-auto">
-        <table class="min-w-full bg-white rounded-lg shadow">
-            <thead>
-                <tr style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <table class="min-w-full">
+            <thead style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white;">
+                <tr>
                     <th class="px-6 py-4 text-left font-bold text-sm">Farmer ID</th>
                     <th class="px-6 py-4 text-left font-bold text-sm">Name</th>
                     <th class="px-6 py-4 text-left font-bold text-sm">Phone</th>
@@ -144,14 +145,30 @@
             <tbody>
                 {% for farmer in farmers %}
                 <tr style="border-bottom: 1px solid #e8e8e8; transition: all 0.2s;" onmouseover="this.style.backgroundColor='#f0fdf4'; this.style.boxShadow='0 2px 8px rgba(16, 185, 129, 0.1)';" onmouseout="this.style.backgroundColor='white'; this.style.boxShadow='none';">
-                    <td class="px-6 py-5 text-sm font-medium text-gray-900">{{ farmer.farmer_id|default:"N/A" }}</td>
-                    <td class="px-6 py-5 text-sm font-semibold text-gray-900">{{ farmer.name }}</td>
-                    <td class="px-6 py-5 text-sm text-gray-700">{{ farmer.phone }}</td>
-                    <td class="px-6 py-5 text-sm text-gray-700">{{ farmer.total_farms }}</td>
-                    <td class="px-6 py-5 text-sm text-gray-700">{{ farmer.total_acreage }} acres</td>
-                    <td class="px-6 py-5 text-sm text-gray-700">{% if farmer.farms.first %}{{ farmer.farms.first.location }}{% else %}No location{% endif %}</td>
-                    <td class="px-6 py-5 text-sm">
-                        <a href="{% url 'farmer_details' farmer.id %}" class="bg-emerald-500 text-white px-4 py-2 rounded font-medium hover:bg-emerald-600 transition">View</a>
+                    <td class="px-6 py-5 whitespace-nowrap">
+                        <div class="text-base font-medium text-gray-900">{{ farmer.farmer_id|default:"N/A" }}</div>
+                    </td>
+                    <td class="px-6 py-5 whitespace-nowrap">
+                        <a href="{% url 'farmer_details' farmer.id %}" class="text-base font-semibold text-emerald-600 hover:text-emerald-900">
+                            {{ farmer.name }}
+                        </a>
+                    </td>
+                    <td class="px-6 py-5 whitespace-nowrap">
+                        <div class="text-base font-medium text-gray-900">{{ farmer.phone }}</div>
+                    </td>
+                    <td class="px-6 py-5 whitespace-nowrap">
+                        <div class="text-base font-medium text-gray-900">{{ farmer.total_farms }}</div>
+                    </td>
+                    <td class="px-6 py-5 whitespace-nowrap">
+                        <div class="text-base font-medium text-gray-900">{{ farmer.total_acreage }} acres</div>
+                    </td>
+                    <td class="px-6 py-5 whitespace-nowrap">
+                        <div class="text-base font-medium text-gray-900">{% if farmer.farms.first %}{{ farmer.farms.first.location }}{% else %}<span class="text-gray-400">No location</span>{% endif %}</div>
+                    </td>
+                    <td class="px-6 py-5 whitespace-nowrap text-base font-medium">
+                        <a href="{% url 'farmer_details' farmer.id %}" class="text-emerald-600 hover:text-emerald-900 font-semibold" title="View Details">
+                            <i class="fas fa-eye"></i> View
+                        </a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -160,16 +177,19 @@
     </div>
 
     {% else %}
-    <div class="empty-state">
-        <div class="icon">🌾</div>
-        <h3>No Farmers Found</h3>
-        <p>
+    <div class="bg-white rounded-lg shadow p-8 text-center">
+        <i class="fas fa-users text-gray-400 text-6xl mb-4"></i>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">No Farmers Found</h3>
+        <p class="text-gray-600 mb-4">
             {% if search_query %}
                 Try a different search term
             {% else %}
                 Start by adding your first farmer
             {% endif %}
         </p>
+        <a href="{% url 'add_farmer' %}" class="bg-emerald-500 text-white px-6 py-3 rounded hover:bg-emerald-600">
+            <i class="fas fa-plus mr-2"></i>Add First Farmer
+        </a>
     </div>
     {% endif %}
 </div>
