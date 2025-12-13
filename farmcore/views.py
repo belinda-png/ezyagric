@@ -7,32 +7,7 @@ from django.utils import timezone
 from farmcore.models import *
 from farmcore.forms import *
 
-def login_view(request):
-    """Handle user login"""
-    if request.user.is_authenticated:
-        return redirect('dashboard')
-    
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            login(request, user)
-            messages.success(request, f'Welcome back, {user.first_name or user.username}!')
-            return redirect('dashboard')
-        else:
-            messages.error(request, 'Invalid username or password.')
-    
-    return render(request, 'login.html')
 
-def logout_view(request):
-    """Handle user logout"""
-    logout(request)
-    messages.success(request, 'You have been logged out successfully.')
-    return redirect('login')
-
-@login_required(login_url='login')
 def dashboard(request):
     today = timezone.now().date()
 
@@ -80,9 +55,7 @@ def dashboard(request):
 
     return render(request, "dashboard.html", context)
 
-
-
-
+# Farmer Management Views
 def farmers(request):
     """Display list of all registered farmers"""
     search_query = request.GET.get('search', '')
@@ -101,6 +74,8 @@ def farmers(request):
         'search_query': search_query,
     }
     return render(request, 'farmer.html', context)
+
+# Basic Views
 def base(request):
     """Render the base template"""
     return render(request, 'base.html')
@@ -116,7 +91,7 @@ def farmer_details(request, farmer_id):
     }
     return render(request, 'view.html', context)
 
-
+# Farmer Management Views
 def add_farmer(request):
     """Add a new farmer to the registry"""
     if request.method == 'POST':
@@ -171,7 +146,7 @@ def delete_farmer(request, farmer_id):
     }
     return render(request, 'confirm_delete.html', context)
 
-
+# Farm Management Views
 def add_farm(request, farmer_id):
     """Add a new farm for a specific farmer"""
     farmer = get_object_or_404(Farmer, id=farmer_id)
@@ -233,9 +208,12 @@ def delete_farm(request, farm_id):
         'farmer': farmer,
     }
     return render(request, 'confirm_delete_farm.html', context)
+
+# Season Plan Views
 def seasonplan_list(request):
     plans = SeasonPlan.objects.all()
     return render(request, "seasonplan_list.html", {"plans": plans})
+
 def seasonplan_create(request):
     form = SeasonPlanForm()
 

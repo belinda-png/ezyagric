@@ -20,10 +20,7 @@ from farmcore import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.login_view, name='login'),
-    # path('login/', views.login_view, name='login_alt'),
-    path('logout/', views.logout_view, name='logout'),
-    path('dashboard/', views.dashboard, name='dashboard'),
+    path('', views.dashboard, name='dashboard'),
     path('farmer/', views.farmers, name='farmer'),
     
     # Farmer management URLs
