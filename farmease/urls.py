@@ -26,14 +26,14 @@ urlpatterns = [
     # Farmer management URLs
     path('base/', views.base, name='base'),
     path('add/', views.add_farmer, name='add_farmer'),
-    path("farmer/<int:farmer_id>/", views.farmer_details, name="farmer_details"),
-    path('farmer/<int:farmer_id>/edit/', views.edit_farmer, name='edit_farmer'),
-    path('farmer/<int:farmer_id>/delete/', views.delete_farmer, name='delete_farmer'),
+    path("farmer/<int:pk>/", views.farmer_details, name="farmer_details"),
+    path('farmer/<int:pk>/edit/', views.edit_farmer, name='edit_farmer'),
+    path('farmer/<int:pk>/delete/', views.delete_farmer, name='delete_farmer'),
     
     # Farm management URLs
-    path('farmer/<int:farmer_id>/add_farm/', views.add_farm, name='add_farm'),
-    path('farm/<int:farm_id>/edit/', views.edit_farm, name='edit_farm'),
-    path('farm/<int:farm_id>/delete/', views.delete_farm, name='delete_farm'),
+    path('farmer/<int:pk>/add_farm/', views.add_farm, name='add_farm'),
+    path('farm/<int:pk>/edit/', views.edit_farm, name='edit_farm'),
+    path('farm/<int:pk>/delete/', views.delete_farm, name='delete_farm'),
       # SEASON PLAN
     path("seasonplans/", views.seasonplan_list, name="seasonplan_list"),
     path("seasonplans/create/", views.seasonplan_create, name="seasonplan_create"),
@@ -45,7 +45,9 @@ urlpatterns = [
     # PLANNED ACTIVITIES
     path("plannedactivities/", views.plannedactivities_list, name="plannedactivities_list"),
     path("plannedactivities/create/", views.plannedactivity_create, name="plannedactivity_create"),
-    path("plannedactivities/delete/<int:pk>/", views.plannedactivity_delete, name="plannedactivity_delete"),
+    path("plannedactivities/<int:pk>/", views.plannedactivity_detail, name="plannedactivity_detail"),
+    path("plannedactivities/<int:pk>/edit/", views.plannedactivity_edit, name="plannedactivity_edit"),
+    path("plannedactivities/<int:pk>/delete/", views.plannedactivity_delete, name="plannedactivity_delete"),
 
     # ACTUAL ACTIVITIES
     path("actualactivities/", views.actualactivities_list, name="actualactivities_list"),

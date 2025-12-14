@@ -4,8 +4,14 @@ from django import forms
 class FarmerForm(forms.ModelForm):
     class Meta:
         model = Farmer
-        fields = ['farmer_id', 'name', 'phone']
+        fields = ['name', 'phone']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                'class': 'form-control'
+            })
 class FarmForm(forms.ModelForm):
     class Meta:
         model = Farm
@@ -15,6 +21,13 @@ class FarmForm(forms.ModelForm):
             'size_in_acres': 'Size (Acres)',
             'location': 'Location',
         }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                'class': 'form-control'
+            })
 
 class SeasonPlanForm(forms.ModelForm):
     class Meta:
@@ -24,6 +37,12 @@ class SeasonPlanForm(forms.ModelForm):
             'start_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                'class': 'form-control'
+            })
 class PlannedActivityForm(forms.ModelForm):
     class Meta:
         model = PlannedActivity
@@ -31,6 +50,13 @@ class PlannedActivityForm(forms.ModelForm):
         widgets ={
             'target_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                'class': 'form-control'
+            })
 
 class ActualActivityForm(forms.ModelForm):
     class Meta:
@@ -38,3 +64,10 @@ class ActualActivityForm(forms.ModelForm):
         fields = ['season_plan', 'activity_type', 'actual_date', 'actual_cost_ugx',  'notes', 'planned_activity']
         widgets ={'actual_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
               }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                'class': 'form-control'
+            })

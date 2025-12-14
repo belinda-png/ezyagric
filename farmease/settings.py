@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'farmcore',
     'rest_framework',
     'django_filters',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

@@ -1,34 +1,40 @@
-{% extends "base.html" %}
-
 {% block content %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 <style>
     body {
         background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
         min-height: 100vh;
     }
 
+    /* Wrapper */
+    .form-wrapper {
+        max-width: 650px;
+        margin: 40px auto 0;
+    }
+
+    /* Header */
     .page-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 30px;
-        padding: 24px;
+        padding: 10px;
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        border-radius: 8px;
         color: white;
+        border-radius: 8px 8px 0 0;
+        font-size: 13px;
     }
 
-    .page-header-content h1 {
-        font-size: 28px;
-        font-weight: 700;
-        margin: 0 0 8px 0;
-    }
-
-    .page-header-content p {
+    .page-header h1 {
         margin: 0;
-        opacity: 0.9;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .page-header p {
+        margin: 0;
         font-size: 14px;
+        opacity: 0.9;
     }
 
     .back-button {
@@ -41,8 +47,8 @@
         border-radius: 6px;
         text-decoration: none;
         font-weight: 500;
-        transition: all 0.3s;
         border: 1px solid rgba(255, 255, 255, 0.3);
+        transition: 0.3s;
     }
 
     .back-button:hover {
@@ -50,20 +56,14 @@
         transform: translateX(-2px);
     }
 
-    .form-wrapper {
-        max-width: 650px;
-        margin: 0 auto;
+    /* Form Card */
+    form {
+        background: white;
+        padding: 20px;
+        border-radius: 0 0 8px 8px;
     }
 
-    .form-title {
-        font-size: 28px;
-        font-weight: 700;
-        color: #1a1a1a;
-        margin-bottom: 30px;
-        padding-bottom: 20px;
-        border-bottom: 2px solid #f0f0f0;
-    }
-
+    /* Fields */
     .form-group {
         margin-bottom: 24px;
     }
@@ -71,9 +71,9 @@
     .form-group label {
         display: block;
         font-weight: 600;
-        color: #1a1a1a;
         margin-bottom: 8px;
         font-size: 14px;
+        color: #1a1a1a;
     }
 
     .form-group input,
@@ -83,18 +83,9 @@
         padding: 12px 14px;
         border: none;
         border-bottom: 2px solid #e0e0e0;
-        border-radius: 0;
+        background: #f0fdf4;
         font-size: 14px;
-        font-family: inherit;
-        transition: all 0.3s;
-        background-color: #f0fdf4;
-        color: #1a1a1a;
-    }
-
-    .form-group input::placeholder,
-    .form-group select::placeholder,
-    .form-group textarea::placeholder {
-        color: #999;
+        transition: 0.3s;
     }
 
     .form-group input:focus,
@@ -102,198 +93,31 @@
     .form-group textarea:focus {
         outline: none;
         border-bottom-color: #10b981;
-        background-color: #e0f2fe;
-        box-shadow: none;
+        background: #e0f2fe;
     }
 
-    .form-group textarea {
+    textarea {
         resize: vertical;
         min-height: 100px;
     }
 
-    /* Custom Calendar Styles */
-    .calendar-wrapper {
-        position: relative;
-    }
-
-    .calendar-input {
-        position: relative;
-    }
-
-    .calendar-input::after {
-        content: "📅";
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 18px;
-        pointer-events: none;
-    }
-
-    .calendar-popup {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: white;
-        border: 2px solid #10b981;
-        border-radius: 8px;
-        padding: 16px;
-        margin-top: 8px;
-        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
-        z-index: 1000;
-        min-width: 320px;
-    }
-
-    .calendar-popup.active {
-        display: block;
-    }
-
-    .calendar-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 16px;
-        padding-bottom: 12px;
-        border-bottom: 2px solid #f0f0f0;
-    }
-
-    .calendar-header button {
-        background: #10b981;
-        color: white;
-        border: none;
-        width: 32px;
-        height: 32px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: all 0.2s;
-    }
-
-    .calendar-header button:hover {
-        background: #059669;
-        transform: scale(1.1);
-    }
-
-    .calendar-header h3 {
-        margin: 0;
-        font-size: 16px;
-        font-weight: 600;
-        color: #1a1a1a;
-    }
-
-    .calendar-weekdays {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 4px;
-        margin-bottom: 8px;
-    }
-
-    .calendar-weekday {
-        text-align: center;
-        font-weight: 600;
-        color: #10b981;
-        font-size: 12px;
-        padding: 8px 0;
-    }
-
-    .calendar-days {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 4px;
-    }
-
-    .calendar-day {
-        aspect-ratio: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 500;
-        transition: all 0.2s;
-        border: 2px solid transparent;
-        color: #1a1a1a;
-    }
-
-    .calendar-day:hover:not(.disabled):not(.other-month) {
-        background: #f0fdf4;
-        border-color: #10b981;
-    }
-
-    .calendar-day.today {
-        background: #e0f2fe;
-        border-color: #10b981;
-        font-weight: 700;
-    }
-
-    .calendar-day.selected {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: white;
-        font-weight: 700;
-    }
-
-    .calendar-day.other-month {
-        color: #ccc;
-        cursor: default;
-    }
-
-    .calendar-day.disabled {
-        color: #ccc;
-        cursor: not-allowed;
-    }
-
-    .calendar-footer {
-        display: flex;
-        gap: 8px;
-        margin-top: 12px;
-        padding-top: 12px;
-        border-top: 2px solid #f0f0f0;
-    }
-
-    .calendar-footer button {
-        flex: 1;
-        padding: 8px 12px;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: 500;
-        transition: all 0.2s;
-        font-size: 13px;
-    }
-
-    .calendar-footer .btn-clear {
-        background: #f0f0f0;
-        color: #333;
-    }
-
-    .calendar-footer .btn-clear:hover {
-        background: #e0e0e0;
-    }
-
-    .calendar-footer .btn-today {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: white;
-    }
-
-    .calendar-footer .btn-today:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
-
-    .form-group .errorlist {
-        margin-top: 6px;
-        color: #dc3545;
-        font-size: 13px;
+    /* Errors */
+    .errorlist {
         list-style: none;
         padding: 0;
+        margin: 6px 0 0;
+        font-size: 13px;
+        color: #dc3545;
     }
 
-    .form-group .errorlist li {
-        margin-bottom: 4px;
+    .has-error input,
+    .has-error select,
+    .has-error textarea {
+        border-bottom-color: #dc3545 !important;
+        background: #fff5f5;
     }
 
+    /* Buttons */
     .button-group {
         display: flex;
         gap: 12px;
@@ -304,14 +128,12 @@
 
     .btn {
         padding: 12px 24px;
-        border: none;
         border-radius: 6px;
-        font-size: 14px;
+        border: none;
         font-weight: 600;
         cursor: pointer;
         text-decoration: none;
-        display: inline-block;
-        transition: all 0.3s;
+        transition: 0.3s;
     }
 
     .btn-primary {
@@ -321,7 +143,7 @@
 
     .btn-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        box-shadow: 0 4px 12px rgba(16,185,129,.3);
     }
 
     .btn-secondary {
@@ -337,48 +159,44 @@
         .button-group {
             flex-direction: column;
         }
-
-        .button-group .btn {
+        .btn {
             width: 100%;
             text-align: center;
         }
     }
 </style>
 
-<div class="page-header">
-    <div class="page-header-content">
-        <h1>{{ title }}</h1>
-        <p>Plan farm activities and estimate costs</p>
-    </div>
-    <a href="{% url 'plannedactivities_list' %}" class="back-button">
-        <i class="fas fa-arrow-left"></i> Back to Activities
-    </a>
-</div>
-
 <div class="form-wrapper">
-    
-    <form method="POST">
+
+    <div class="page-header">
+        <div>
+            <h1>{{ title }}</h1>
+            <p>Plan farm activities and estimate costs</p>
+        </div>
+        <a href="{% url 'plannedactivities_list' %}" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Activities
+        </a>
+    </div>
+
+    <form method="POST" novalidate>
         {% csrf_token %}
-        
+
         {% for field in form %}
-        <div class="form-group">
+        <div class="form-group {% if field.errors %}has-error{% endif %}">
             <label for="{{ field.id_for_label }}">
                 {{ field.label }}
-                {% if field.field.required %}<span style="color: #dc3545;">*</span>{% endif %}
+                {% if field.field.required %}<span style="color:#dc3545">*</span>{% endif %}
             </label>
             {{ field }}
-            {% if field.errors %}
-                <div style="color: #dc3545; font-size: 13px; margin-top: 6px;">
-                    {{ field.errors }}
-                </div>
-            {% endif %}
+            {{ field.errors }}
         </div>
         {% endfor %}
-        
+
         <div class="button-group">
             <button type="submit" class="btn btn-primary">Save Activity</button>
             <a href="{% url 'plannedactivities_list' %}" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
+
 </div>
 {% endblock %}

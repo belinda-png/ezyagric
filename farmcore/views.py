@@ -65,7 +65,7 @@ def farmers(request):
     if search_query:
         farmers = farmers.filter(
             Q(name__icontains=search_query) |
-            Q(farmer_id__icontains=search_query) |
+            Q(id__icontains=search_query) |
             Q(phone__icontains=search_query)
         )
     
@@ -80,9 +80,9 @@ def base(request):
     """Render the base template"""
     return render(request, 'base.html')
 
-def farmer_details(request, farmer_id):
+def farmer_details(request, pk):
     """Display details of a specific farmer and their farms"""
-    farmer = get_object_or_404(Farmer, id=farmer_id)
+    farmer = get_object_or_404(Farmer, id=pk)
     farms = farmer.farms.all()
     
     context = {
@@ -110,16 +110,16 @@ def add_farmer(request):
     return render(request, 'farmer_form.html', context)
 
 
-def edit_farmer(request, farmer_id):
+def edit_farmer(request, pk):
     """Edit an existing farmer's information"""
-    farmer = get_object_or_404(Farmer, id=farmer_id)
+    farmer = get_object_or_404(Farmer, id=pk)
     
     if request.method == 'POST':
         form = FarmerForm(request.POST, instance=farmer)
         if form.is_valid():
             farmer = form.save()
             messages.success(request, f'Farmer {farmer.name} updated successfully!')
-            return redirect('farmer_details', farmer_id=farmer.id)
+            return redirect('farmer_details', pk=farmer.id)
     else:
         form = FarmerForm(instance=farmer)
     
@@ -131,9 +131,9 @@ def edit_farmer(request, farmer_id):
     return render(request, 'farmer_form.html', context)
 
 
-def delete_farmer(request, farmer_id):
+def delete_farmer(request, pk):
     """Delete a farmer from the registry"""
-    farmer = get_object_or_404(Farmer, id=farmer_id)
+    farmer = get_object_or_404(Farmer, id=pk)
     
     if request.method == 'POST':
         farmer_name = farmer.name
@@ -147,9 +147,9 @@ def delete_farmer(request, farmer_id):
     return render(request, 'confirm_delete.html', context)
 
 # Farm Management Views
-def add_farm(request, farmer_id):
+def add_farm(request, pk):
     """Add a new farm for a specific farmer"""
-    farmer = get_object_or_404(Farmer, id=farmer_id)
+    farmer = get_object_or_404(Farmer, id=pk)
     
     if request.method == 'POST':
         form = FarmForm(request.POST)
@@ -158,7 +158,7 @@ def add_farm(request, farmer_id):
             farm.farmer = farmer
             farm.save()
             messages.success(request, f'Farm {farm.name} added successfully!')
-            return redirect('farmer_details', farmer_id=farmer.id)
+            return redirect('farmer_details', pk=farmer.id)
     else:
         form = FarmForm()
     
@@ -170,16 +170,16 @@ def add_farm(request, farmer_id):
     return render(request, 'farm_form.html', context)
 
 
-def edit_farm(request, farm_id):
+def edit_farm(request, pk):
     """Edit an existing farm's information"""
-    farm = get_object_or_404(Farm, id=farm_id)
+    farm = get_object_or_404(Farm, id=pk)
     
     if request.method == 'POST':
         form = FarmForm(request.POST, instance=farm)
         if form.is_valid():
             farm = form.save()
             messages.success(request, f'Farm {farm.name} updated successfully!')
-            return redirect('farmer_details', farmer_id=farm.farmer.id)
+            return redirect('farmer_details', pk=farm.farmer.id)
     else:
         form = FarmForm(instance=farm)
     
@@ -192,16 +192,17 @@ def edit_farm(request, farm_id):
     return render(request, 'farm_form.html', context)
 
 
-def delete_farm(request, farm_id):
+def delete_farm(request, pk):
     """Delete a farm"""
-    farm = get_object_or_404(Farm, id=farm_id)
+    farm = get_object_or_404(Farm, id=pk)
     farmer = farm.farmer
     
     if request.method == 'POST':
         farm_name = farm.name
+        farmer_id = farm.farmer.id
         farm.delete()
         messages.success(request, f'Farm {farm_name} deleted successfully!')
-        return redirect('farmer_details', farmer_id=farmer.id)
+        return redirect('farmer_details', pk=farmer_id)
     
     context = {
         'farm': farm,
@@ -319,10 +320,46 @@ def plannedactivity_create(request):
         "form": form,
         "title": "Create Planned Activity"
     })
+def plannedactivity_detail(request, pk):
+    """Display details of a specific planned activity"""
+    activity = get_object_or_404(PlannedActivity, id=pk)
+    context = {
+        'activity': activity,
+    }
+    return render(request, 'plannedactivity_detail.html', context)
+
+def plannedactivity_edit(request, pk):
+    """Edit an existing planned activity"""
+    activity = get_object_or_404(PlannedActivity, id=pk)
+    
+    if request.method == 'POST':
+        form = PlannedActivityForm(request.POST, instance=activity)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Planned activity updated successfully!')
+            return redirect('plannedactivity_detail', pk=activity.id)
+    else:
+        form = PlannedActivityForm(instance=activity)
+    
+    context = {
+        'form': form,
+        'title': 'Edit Planned Activity',
+        'activity': activity,
+    }
+    return render(request, 'plannedactivity_form.html', context)
+
 def plannedactivity_delete(request, pk):
-    activity = PlannedActivity.objects.get(id=pk)
-    activity.delete()
-    return redirect("plannedactivities_list")
+    activity = get_object_or_404(PlannedActivity, id=pk)
+    
+    if request.method == 'POST':
+        activity.delete()
+        messages.success(request, 'Planned activity deleted successfully!')
+        return redirect('plannedactivities_list')
+    
+    context = {
+        'activity': activity,
+    }
+    return render(request, 'plannedactivity_confirm_delete.html', context)
 def actualactivities_list(request):
     actuals = ActualActivity.objects.all()
     return render(request, "actualactivities_list.html", {"activities": actuals})
@@ -360,7 +397,7 @@ def actualactivity_delete(request, pk):
     act.delete()
     return redirect("actualactivities_list")
 
-@login_required(login_url='login')
+
 def season_summary_page(request):
     """Display overall season summary statistics"""
     completed_seasons = SeasonPlan.objects.filter(status='completed')

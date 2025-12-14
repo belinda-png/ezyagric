@@ -1,22 +1,18 @@
-<!-- templates/farmers/farmer_details.html -->
-{% extends "base.html" %}
-
-{% block title %}{{ farmer.name }} - Farmers & Farms{% endblock %}
-
 {% block content %}
 <style>
-    .body{
-            padding: 40px;
-            width: 100%;
-            max-width: 1200px;
-            margin: auto;
-        }
+    /* Wrap your whole content in this container */
+    .container {
+        padding: 40px;
+        max-width: 1200px;
+        margin: auto;
+    }
+
     .page-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 20px;
-        padding: 5px;
+        padding: 10px 15px; /* increased padding */
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         border-radius: 8px;
         color: white;
@@ -52,16 +48,122 @@
         background: rgba(255, 255, 255, 0.3);
         transform: translateX(-2px);
     }
+    .card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.card-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.button-group a, .button-group button {
+    margin-left: 10px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    color: white;
+}
+
+.btn-warning {
+    background-color: #f59e0b; /* amber */
+}
+
+.btn-primary {
+    background-color: #3b82f6; /* blue */
+}
+
+.btn-danger {
+    background-color: #ef4444; /* red */
+}
+
+.btn-warning:hover {
+    background-color: #d97706;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb;
+}
+
+.btn-danger:hover {
+    background-color: #dc2626;
+}
+
+/* Layout for info grid */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    background: #f9fafb;
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.info-label {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.farm-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #fff;
+}
+
+.farm-card h4 {
+    margin-top: 0;
+}
+
+.farm-card .button-group a {
+    margin-right: 10px;
+}
+
+.empty-state {
+    text-align: center;
+    margin-top: 40px;
+    color: #6b7280;
+}
+
+.empty-state-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
 </style>
 
 <div class="page-header">
     <div class="page-header-content">
         <h1>{{ farmer.name }}</h1>
-        <p>Farmer ID: {{ farmer.id }}</p>
+        <p>ID: {{ farmer.id }}</p>
     </div>
     <a href="{% url 'farmer' %}" class="back-button">
-        <i class="fas fa-arrow-left"></i> Back to Farmers
-    </a>
+    <i class="fas fa-arrow-left"></i> Back to Farmers
+</a>
+
 </div>
 
 <div class="card">

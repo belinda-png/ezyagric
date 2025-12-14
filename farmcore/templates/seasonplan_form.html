@@ -9,26 +9,28 @@
     }
 
     .page-header {
+        margin-bottom: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 30px;
-        padding: 24px;
+        padding: 10px;
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        border-radius: 8px;
-        color: white;
+        font-size: 13px;
     }
 
     .page-header-content h1 {
-        font-size: 28px;
+        margin: 0;
+        font-size: 18px;
         font-weight: 700;
-        margin: 0 0 8px 0;
+        color: white;
     }
 
     .page-header-content p {
         margin: 0;
-        opacity: 0.9;
-        font-size: 14px;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 12px;
     }
 
     .back-button {
@@ -50,17 +52,23 @@
         transform: translateX(-2px);
     }
 
+    form {
+        background: white;
+        padding: 12px;
+        border-radius: 0 0 8px 8px;
+    }
+
     .form-wrapper {
         max-width: 650px;
         margin: 0 auto;
     }
 
     .form-title {
-        font-size: 28px;
+        font-size: 20px;
         font-weight: 700;
         color: #1a1a1a;
         margin-bottom: 30px;
-        padding-bottom: 20px;
+        padding-bottom: 10px;
         border-bottom: 2px solid #f0f0f0;
     }
 
@@ -343,20 +351,32 @@
             text-align: center;
         }
     }
+
+    .field-error {
+        color: #dc3545;
+        font-size: 13px;
+        margin-top: 6px;
+    }
+
+    .has-error input,
+    .has-error select,
+    .has-error textarea {
+        border-bottom-color: #dc3545 !important;
+        background-color: #fff5f5;
+    }
 </style>
 
-<div class="page-header">
-    <div class="page-header-content">
-        <h1>{{ title }}</h1>
-        <p>Create and manage season plans for your crops</p>
-    </div>
-    <a href="{% url 'seasonplan_list' %}" class="back-button">
-        <i class="fas fa-arrow-left"></i> Back to Plans
-    </a>
-</div>
-
 <div class="form-wrapper">
-    
+    <div class="page-header">
+        <div class="page-header-content">
+            <h1>{{ title }}</h1>
+            <p>Create and manage season plans</p>
+        </div>
+        <a href="{% url 'seasonplan_list' %}" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Plans
+        </a>
+    </div>
+
     <form method="POST">
         {% csrf_token %}
         
@@ -366,9 +386,13 @@
                 {{ field.label }}
                 {% if field.field.required %}<span style="color: #dc3545;">*</span>{% endif %}
             </label>
-            {{ field }}
+            
+            <div class="{% if field.errors %}has-error{% endif %}">
+                {{ field }}
+            </div>
+            
             {% if field.errors %}
-                <div style="color: #dc3545; font-size: 13px; margin-top: 6px;">
+                <div class="field-error">
                     {{ field.errors }}
                 </div>
             {% endif %}

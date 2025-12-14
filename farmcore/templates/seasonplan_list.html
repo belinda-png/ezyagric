@@ -15,6 +15,12 @@
             max-width: 1200px;
             margin: auto;
         }
+        .season-container {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
         .page-header {
             display: flex;
             justify-content: space-between;
@@ -26,10 +32,10 @@
             color: white;
         }
 
-        .page-header-content h1 {
+        .page-header-content h2 {
+            margin: 0 0 8px 0;
             font-size: 20px;
             font-weight: 700;
-            margin: 0 0 8px 0;
         }
 
         .page-header-content p {
@@ -41,7 +47,7 @@
         .back-button {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            /* gap: 8px; */
             background: rgba(255, 255, 255, 0.2);
             color: white;
             padding: 10px 16px;
@@ -59,21 +65,22 @@
 
         .action-buttons {
             display: flex;
-            gap: 12px;
+            gap: 8px;
         }
 
         .btn-action {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
             background: rgba(255, 255, 255, 0.2);
             color: white;
             padding: 10px 16px;
             border-radius: 6px;
             text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
+            font-size: 15px;
+            transition: 0.3s;
             border: 1px solid rgba(255, 255, 255, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
         }
 
         .btn-action:hover {
@@ -90,7 +97,7 @@
         }
     </style>
 
-    <div class="container mx-auto px-4 py-8">
+    <div class="season-container ">
         <div class="page-header">
             <div class="page-header-content">
                 <h1>Season Plans</h1>
