@@ -1,0 +1,194 @@
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    body {
+        background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
+        min-height: 100vh;
+    }
+
+    .page-header {
+        margin-bottom: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        font-size: 13px;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 10px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .back-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateX(-2px);
+    }
+
+    .detail-wrapper {
+        max-width: 650px;
+        margin: 40px auto 0;
+    }
+
+    .detail-content {
+        background: white;
+        padding: 12px;
+        border-radius: 0 0 8px 8px;
+    }
+
+    .detail-section {
+        margin-bottom: 24px;
+    }
+
+    .detail-label {
+        display: block;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .detail-value {
+        font-size: 14px;
+        color: #333;
+        padding: 12px 14px;
+        background-color: #f0fdf4;
+        border-bottom: 2px solid #e0e0e0;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 2px solid #f0f0f0;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-secondary {
+        background: #f0f0f0;
+        color: #333;
+    }
+
+    .btn-secondary:hover {
+        background: #e0e0e0;
+    }
+
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    }
+
+    @media (max-width: 600px) {
+        .button-group {
+            flex-direction: column;
+        }
+
+        .button-group .btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="detail-wrapper">
+    <div class="page-header">
+        <div class="page-header-content">
+            <h1>Actual Activity Details</h1>
+            <p>View activity information</p>
+        </div>
+        <a href="{% url 'actualactivities_list' %}" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Activities
+        </a>
+    </div>
+
+    <div class="detail-content">
+        <div class="detail-section">
+            <label class="detail-label">Activity Type</label>
+            <div class="detail-value">{{ activity.activity_type }}</div>
+        </div>
+
+        <div class="detail-section">
+            <label class="detail-label">Season Plan</label>
+            <div class="detail-value">{{ activity.season_plan.crop_name }} - {{ activity.season_plan.farm.name }}</div>
+        </div>
+
+        <div class="detail-section">
+            <label class="detail-label">Actual Date</label>
+            <div class="detail-value">{{ activity.actual_date|date:"M d, Y" }}</div>
+        </div>
+
+        <div class="detail-section">
+            <label class="detail-label">Actual Cost (UGX)</label>
+            <div class="detail-value">
+                {% if activity.actual_cost_ugx %}
+                    {{ activity.actual_cost_ugx|floatformat:0 }}
+                {% else %}
+                    <span style="color: #999;">Not set</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <label class="detail-label">Notes</label>
+            <div class="detail-value">
+                {% if activity.notes %}
+                    {{ activity.notes }}
+                {% else %}
+                    <span style="color: #999;">No notes</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="button-group">
+            <a href="{% url 'actualactivity_edit' activity.id %}" class="btn btn-primary">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a href="{% url 'actualactivity_delete' activity.id %}" class="btn btn-danger">
+                <i class="fas fa-trash"></i> Delete
+            </a>
+            <a href="{% url 'actualactivities_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

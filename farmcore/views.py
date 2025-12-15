@@ -392,10 +392,26 @@ def actualactivity_edit(request, pk):
         "form": form,
         "title": "Edit Actual Activity"
     })
+def actualactivity_detail(request, pk):
+    """Display details of a specific actual activity"""
+    activity = get_object_or_404(ActualActivity, id=pk)
+    context = {
+        'activity': activity,
+    }
+    return render(request, 'actualactivity_detail.html', context)
+
 def actualactivity_delete(request, pk):
-    act = ActualActivity.objects.get(id=pk)
-    act.delete()
-    return redirect("actualactivities_list")
+    act = get_object_or_404(ActualActivity, id=pk)
+    
+    if request.method == 'POST':
+        act.delete()
+        messages.success(request, 'Actual activity deleted successfully!')
+        return redirect('actualactivities_list')
+    
+    context = {
+        'activity': act,
+    }
+    return render(request, 'actualactivity_confirm_delete.html', context)
 
 
 def season_summary_page(request):

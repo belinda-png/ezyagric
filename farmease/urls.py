@@ -52,8 +52,9 @@ urlpatterns = [
     # ACTUAL ACTIVITIES
     path("actualactivities/", views.actualactivities_list, name="actualactivities_list"),
     path("actualactivities/create/", views.actualactivity_create, name="actualactivity_create"),
-    path("actualactivities/edit/<int:pk>/", views.actualactivity_edit, name="actualactivity_edit"),
-    path("actualactivities/delete/<int:pk>/", views.actualactivity_delete, name="actualactivity_delete"),
+    path("actualactivities/<int:pk>/", views.actualactivity_detail, name="actualactivity_detail"),
+    path("actualactivities/<int:pk>/edit/", views.actualactivity_edit, name="actualactivity_edit"),
+    path("actualactivities/<int:pk>/delete/", views.actualactivity_delete, name="actualactivity_delete"),
     
     # SEASON SUMMARY
     path("season-summary/", views.season_summary_page, name="season_summary_page"),
